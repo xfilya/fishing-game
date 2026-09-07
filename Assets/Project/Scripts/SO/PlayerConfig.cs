@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerConfig", menuName = "Configs/PlayerConfig")]
-public class PlayerConfig : ScriptableObject
+public sealed class PlayerConfig : ScriptableObject
 {
     [Header("Movement")]
     [field: SerializeField] public float BaseSpeed { get; private set; } = 5f;
