@@ -31,6 +31,7 @@
   <Project Path="Unity.TextMeshPro.Editor.csproj" />
   <Project Path="VContainer.Editor.csproj" />
   <Project Path="Unity.Rider.Editor.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.VisualScripting.State.csproj" />
   <Project Path="Unity.AI.Navigation.Updater.csproj" />
   <Project Path="UnityEditor.UI.csproj" />
@@ -63,7 +64,6 @@
   <Project Path="Unity.Collections.Tests.CoreCLR.PublicJobPrivateGeneric.csproj" />
   <Project Path="Unity.InputSystem.DocCodeSamples.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Shaders.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.InternalAPIEditorBridge.ShaderGraph.Editor.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="Unity.Collections.Tests.CoreCLR.PrivateJobNested.csproj" />
@@ -91,6 +91,7 @@
   <Project Path="Unity.PerformanceTesting.Player.csproj" />
   <Project Path="Unity.InputSystem.ForUI.Player.csproj" />
   <Project Path="Unity.TextMeshPro.Player.csproj" />
+  <Project Path="Assembly-CSharp.Player.csproj" />
   <Project Path="Unity.VisualScripting.State.Player.csproj" />
   <Project Path="Assembly-CSharp-firstpass.Player.csproj" />
   <Project Path="Unity.RenderPipelines.Core.Runtime.Shared.Player.csproj" />
@@ -106,7 +107,6 @@
   <Project Path="Unity.InternalAPIEngineBridge.004.Player.csproj" />
   <Project Path="Unity.Collections.Tests.CoreCLR.PublicJobPrivateGeneric.Player.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Shaders.Player.csproj" />
-  <Project Path="Assembly-CSharp.Player.csproj" />
   <Project Path="Unity.VisualScripting.DocCodeExamples.Player.csproj" />
   <Project Path="Unity.Collections.Tests.CoreCLR.PrivateJobNested.Player.csproj" />
   <Project Path="Unity.Collections.Tests.CoreCLR.ProtectedJobNested.Player.csproj" />
