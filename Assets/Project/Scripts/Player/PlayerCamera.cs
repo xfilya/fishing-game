@@ -1,7 +1,13 @@
+using DG.Tweening;
 using UnityEngine;
 
-public class PlayerCamera : MonoBehaviour
+public sealed class PlayerCamera : MonoBehaviour
 {
+    [SerializeField] private Camera _camera;
+
+    private Tween _fovTween;
+    private float _defaultFov;
+
     [SerializeField] private Transform _cameraRoot;
 
     private IInputService _input;
@@ -15,6 +21,7 @@ public class PlayerCamera : MonoBehaviour
     {
         _input = inputService;
         _config = playerConfig;
+        _defaultFov = _camera.fieldOfView;
     }
 
     private void Start()
@@ -32,6 +39,11 @@ public class PlayerCamera : MonoBehaviour
             return;
 
         Look();
+    }
+
+    private void OnDestroy()
+    {
+        _fovTween?.Kill();
     }
 
     private void Look()
@@ -62,5 +74,14 @@ public class PlayerCamera : MonoBehaviour
         pitch = Mathf.Clamp(pitch, -_config.CameraClampAngle, _config.CameraClampAngle);
 
         _cameraRoot.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+    }
+
+    public void SetSprintFov(bool isSprinting)
+    {
+        float targetFov = isSprinting ? _defaultFov + _config.SprintFovOffset : _defaultFov;
+
+        _fovTween?.Kill();
+
+        _fovTween = _camera.DOFieldOfView(targetFov, _config.SprintTransitionSpeed).SetEase(Ease.OutSine);
     }
 }

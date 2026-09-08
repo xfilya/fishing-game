@@ -1,9 +1,9 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+public sealed class PlayerMovement : MonoBehaviour
 {
-    public float SpeedMultiplier { get; set; } = 1f;
+    public float SpeedMultiplier { get; private set; } = 1f;
     public CharacterController CharacterController { get; private set; }
     public float VerticalVelocity { get; private set; }
     public float MoveSpeed => _config.BaseSpeed * SpeedMultiplier;
@@ -53,5 +53,15 @@ public class PlayerMovement : MonoBehaviour
         velocity.y = VerticalVelocity;
 
         CharacterController.Move(velocity * Time.deltaTime);
+    }
+
+    public bool TryJump(float jumpHeight)
+    {
+        if (!CharacterController.isGrounded)
+            return false;
+
+        VerticalVelocity = Mathf.Sqrt(jumpHeight * -2f * _config.Gravity);
+
+        return true;
     }
 }

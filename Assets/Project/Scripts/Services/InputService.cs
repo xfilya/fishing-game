@@ -15,6 +15,12 @@ public class InputService : IInputService, IDisposable
     public bool IsMouse => 
         _actions.Player.Look.activeControl?.device is Mouse;
 
+    public bool JumpPressedThisFrame => 
+        _actions.Player.Jump.WasPressedThisFrame();
+
+    public bool SprintHeld => 
+        _actions.Player.Sprint.IsPressed();
+
     public InputService()
     {
         _actions = new InputSystem_Actions();

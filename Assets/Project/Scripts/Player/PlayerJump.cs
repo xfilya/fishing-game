@@ -1,0 +1,32 @@
+using System;
+using UnityEngine;
+
+public sealed class PlayerJump : MonoBehaviour
+{
+    public event Action OnJump;
+
+    private IInputService _input;
+    private PlayerConfig _config;
+    private PlayerMovement _movement;
+
+    public void Initialize(
+        IInputService inputService,
+        PlayerConfig playerConfig,
+        PlayerMovement playerMovement)
+    {
+        _input = inputService;
+        _config = playerConfig;
+        _movement = playerMovement;
+    }
+
+    private void Update()
+    {
+        if (_input == null)
+            return;
+
+        if (_input.JumpPressedThisFrame && _movement.TryJump(_config.JumpHeight))
+        {
+            OnJump?.Invoke();
+        }
+    }
+}
