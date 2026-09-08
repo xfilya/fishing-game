@@ -64,4 +64,7 @@ public sealed class PlayerMovement : MonoBehaviour
 
         return true;
     }
+
+    public void SetSpeedMultiplier(float value) => SpeedMultiplier = Mathf.Max(0f, value);
+    
 }
