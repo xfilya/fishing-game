@@ -16,6 +16,7 @@
   <Project Path="Unity.PerformanceTesting.Editor.csproj" />
   <Project Path="UnityEngine.TestRunner.csproj" />
   <Project Path="Unity.VisualScripting.Flow.Editor.csproj" />
+  <Project Path="Linework.csproj" />
   <Project Path="VContainer.csproj" />
   <Project Path="Unity.VisualStudio.Editor.csproj" />
   <Project Path="Unity.Searcher.Editor.csproj" />
@@ -30,6 +31,7 @@
   <Project Path="Unity.TextMeshPro.csproj" />
   <Project Path="Unity.TextMeshPro.Editor.csproj" />
   <Project Path="VContainer.Editor.csproj" />
+  <Project Path="Linework.Editor.csproj" />
   <Project Path="Unity.Rider.Editor.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Unity.VisualScripting.State.csproj" />
@@ -84,6 +86,7 @@
   <Project Path="UnityEngine.UI.Player.csproj" />
   <Project Path="Unity.RenderPipelines.Universal.Runtime.Player.csproj" />
   <Project Path="UnityEngine.TestRunner.Player.csproj" />
+  <Project Path="Linework.Player.csproj" />
   <Project Path="VContainer.Player.csproj" />
   <Project Path="Unity.VisualScripting.Core.Player.csproj" />
   <Project Path="Unity.UnifiedRayTracing.Runtime.Player.csproj" />

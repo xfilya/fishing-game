@@ -14,6 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfig
   <BaseSpeed>k__BackingField: 5
   <Gravity>k__BackingField: -20
-  <MouseSensitivity>k__BackingField: 0.1
+  <MouseSensitivity>k__BackingField: 0.05
   <StickSensitivity>k__BackingField: 180
   <CameraClampAngle>k__BackingField: 89
+  <JumpHeight>k__BackingField: 1.5
+  <SprintMultiplier>k__BackingField: 1.5
+  <SprintFovOffset>k__BackingField: 5
+  <SprintTransitionSpeed>k__BackingField: 0.15
