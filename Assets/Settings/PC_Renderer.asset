@@ -1,5 +1,22 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-7581426878066218096
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 163d34cee9b7a428d9899ab92abd7e0d, type: 3}
+  m_Name: UmbraRenderFeature
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::Umbra.UmbraRenderFeature
+  m_Active: 1
+  m_Shader: {fileID: 0}
+  camerasLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28,8 +45,9 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: 9202925058298295534}
   - {fileID: 1272983538486009997}
+  - {fileID: -7581426878066218096}
   - {fileID: 2174157100904310715}
-  m_RendererFeatureMap: ad6b866f10d7b46cee3469d2945bb77f8de060a0c88baa11bb674b355d282c1el
+  m_RendererFeatureMap: ad6b866f10d7b46cee3469d2945bb77f8de060a0c88baa1190ab432a6c5cc996bb674b355d282c1el
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   m_AssetVersion: 3

@@ -26,6 +26,11 @@ public sealed class PlayerSprint : MonoBehaviour
         if (_input == null)
             return;
 
+        Sprint();
+    }
+
+    private void Sprint()
+    {
         bool shouldSprint = _input.SprintHeld && _input.Movement.sqrMagnitude > 0.01f;
 
         if (shouldSprint == _isSprinting)

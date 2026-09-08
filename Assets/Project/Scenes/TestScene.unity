@@ -16,8 +16,8 @@ RenderSettings:
   serializedVersion: 10
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogMode: 2
+  m_FogDensity: 0.032
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -541,6 +541,7 @@ GameObject:
   - component: {fileID: 410087041}
   - component: {fileID: 410087040}
   - component: {fileID: 410087042}
+  - component: {fileID: 410087043}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -657,6 +658,22 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &410087043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 410087039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e828e348ac39438eb8ae845fe499ae5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::Umbra.UmbraSoftShadows
+  profile: {fileID: 1612915338}
+  contactShadowsSource: 0
+  pointLightsTrigger: {fileID: 0}
+  debugShadows: 0
 --- !u!1 &416732790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1506,6 +1523,79 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239580765}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1612915338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6751c6668ce8047e5bcc50f8586c1fe7, type: 3}
+  m_Name: New Umbra Profile
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::Umbra.UmbraProfile
+  shadowSource: 1
+  sampleCount: 16
+  earlyOutSamples: 32
+  lightSize: 6
+  enableContactHardening: 1
+  contactStrength: 0.5
+  contactStrengthKnee: 0.0001
+  distantSpread: 1
+  occludersCount: 8
+  occludersSearchRadius: 8
+  blurIterations: 1
+  blurType: 10
+  blurSpread: 1
+  blurEdgeSharpness: 0.192
+  blurEdgeTolerance: 5
+  blurDepthAttenStart: 50
+  blurDepthAttenLength: 50
+  blurGrazingAttenuation: 0
+  blendCascades: 0
+  posterization: 1
+  cascade1BlendingStrength: 0.1
+  cascade2BlendingStrength: 0.1
+  cascade3BlendingStrength: 0.1
+  cascade1Scale: 1
+  cascade2Scale: 1
+  cascade3Scale: 1
+  cascade4Scale: 1
+  normalsSource: 0
+  loopStepOptimization: 0
+  frameSkipOptimization: 0
+  skipFrameMaxCameraDisplacement: 0.1
+  skipFrameMaxCameraRotation: 5
+  downsample: 0
+  forceDepthPrepass: 0
+  preserveEdges: 1
+  style: 0
+  maskTexture: {fileID: 0}
+  maskScale: 1
+  contactShadows: 0
+  contactShadowsIntensityMultiplier: 0.85
+  contactShadowsInjectionPoint: 0
+  contactShadowsSampleCount: 16
+  contactShadowsStepping: 0.01
+  contactShadowsThicknessNear: 0.5
+  contactShadowsThicknessDistanceMultiplier: 0
+  contactShadowsJitter: 0.3
+  contactShadowsDistanceFade: 0.75
+  contactShadowsStartDistance: 0
+  contactShadowsStartDistanceFade: 0.01
+  contactShadowsNormalBias: 0.1
+  contactShadowsVignetteSize: 0.15
+  contactShadowsBias: 0.001
+  contactShadowsBiasFar: 0.4
+  contactShadowsEdgeSoftness: 0.1
+  contactShadowsSoftEdges: 0
+  contactShadowsPlanarShadows: 0
+  overlayShadows: 0
+  overlayShadowsIntensity: 0.5
+  overlayShadowsColor: {r: 0, g: 0, b: 0, a: 1}
+  transparentReceiverPlane: 0
+  receiverPlaneAltitude: 0
 --- !u!1 &1870186318
 GameObject:
   m_ObjectHideFlags: 0

@@ -24,6 +24,11 @@ public sealed class PlayerJump : MonoBehaviour
         if (_input == null)
             return;
 
+       Jump();
+    }
+
+    private void Jump()
+    {
         if (_input.JumpPressedThisFrame && _movement.TryJump(_config.JumpHeight))
         {
             OnJump?.Invoke();
