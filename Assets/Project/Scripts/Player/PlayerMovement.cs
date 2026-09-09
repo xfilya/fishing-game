@@ -66,5 +66,15 @@ public sealed class PlayerMovement : MonoBehaviour
     }
 
     public void SetSpeedMultiplier(float value) => SpeedMultiplier = Mathf.Max(0f, value);
+
+    public void Teleport(Transform point)
+    {
+        CharacterController.enabled = false;
+
+        transform.SetPositionAndRotation(point.position, point.rotation);
+        VerticalVelocity = 0f;
+
+        CharacterController.enabled = true;
+    }
     
 }
