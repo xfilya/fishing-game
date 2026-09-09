@@ -77,7 +77,7 @@ Material:
     - _Tiling01: 0.5
     - _Tiling02: 1
     - _UseFog: 1
-    - _ViewDistance: 10000
+    - _ViewDistance: 1000
     - __dirty: 0
     - _cloudsHeight: 194.37
     - _cloudsPosition: 800
@@ -87,3 +87,4 @@ Material:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _ScatteringColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1

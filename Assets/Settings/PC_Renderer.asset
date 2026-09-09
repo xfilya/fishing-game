@@ -1,5 +1,31 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-8664013454652925978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c6e585d9d2317e438a403bbb1965d5e, type: 3}
+  m_Name: StylizedWater3.StylizedWaterRenderFeature
+  m_EditorClassIdentifier: sc.stylizedwater3.runtime::StylizedWater3.StylizedWaterRenderFeature
+  m_Active: 1
+  transparencyRefraction: 0
+  screenSpaceReflectionSettings:
+    allow: 1
+    reflectEverything: 0
+  allowDirectionalCaustics: 0
+  heightPrePassSettings:
+    enable: 1
+    range: 500
+    cellsPerUnit: 4
+    maxResolution: 4096
+    disableInSceneView: 1
+  heightReadbackCS: {fileID: 7200000, guid: 768e0c28dfdbc6b429fd59518fa03f2d, type: 3}
+  heightProcessingShader: {fileID: 4800000, guid: a1cfcf2c2c8140c084fb10845093540e, type: 3}
 --- !u!114 &-7581426878066218096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -47,6 +73,7 @@ MonoBehaviour:
   - {fileID: 1272983538486009997}
   - {fileID: -7581426878066218096}
   - {fileID: 2174157100904310715}
+  - {fileID: -8664013454652925978}
   m_RendererFeatureMap: ad6b866f10d7b46cee3469d2945bb77f8de060a0c88baa1190ab432a6c5cc996bb674b355d282c1el
   xrSystemData: {fileID: 0}
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
@@ -108,7 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9377bada70366419aa6301068e988aa4, type: 3}
   m_Name: EdgeDetection
   m_EditorClassIdentifier: Linework::Linework.EdgeDetection.EdgeDetection
-  m_Active: 1
+  m_Active: 0
   settings: {fileID: 11400000, guid: 4090fa65512f96c4794caaf23e80f23f, type: 2}
   shaders:
     section: {fileID: 4800000, guid: 555b69c4bab64af2aab316a4335ad6be, type: 3}

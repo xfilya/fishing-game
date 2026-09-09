@@ -18,12 +18,12 @@ MonoBehaviour:
   debugSectionsChannels: 7
   debugPerceptualSections: 0
   discontinuityInput: 11
-  depthSensitivity: 0.299
-  depthDistanceModulation: 0.258
-  grazingAngleMaskPower: 0.236
-  grazingAngleMaskHardness: 1
-  normalSensitivity: 0.259
-  luminanceSensitivity: 0.477
+  depthSensitivity: 0.29
+  depthDistanceModulation: 0.672
+  grazingAngleMaskPower: 0.648
+  grazingAngleMaskHardness: 4.6
+  normalSensitivity: 0
+  luminanceSensitivity: 0.115
   objectId: 1
   particles: 0
   sectionMapInput: 0
@@ -32,7 +32,7 @@ MonoBehaviour:
   sectionTextureChannel: 0
   vertexColorChannel: 0
   sectionMapPrecision: 1
-  sectionMapClearValue: 1
+  sectionMapClearValue: 0
   sectionRenderQueue: 0
   additionalSectionPasses: []
   SectionRenderingLayer:
