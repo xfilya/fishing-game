@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 462213282834065657}
+  - component: {fileID: 4668143250166427722}
   m_Layer: 0
   m_Name: ROD
   m_TagString: Untagged
@@ -32,6 +33,28 @@ Transform:
   - {fileID: 644118339044356784}
   m_Father: {fileID: 2385441417062404771}
   m_LocalEulerAnglesHint: {x: -27.371, y: 0, z: 0}
+--- !u!114 &4668143250166427722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59997093470024797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd4666d1d26a80f4baa85622ecfb605d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RodView
+  _rotationRoot: {fileID: 462213282834065657}
+  _animator: {fileID: 4706757805454015130}
+  _bendClip: {fileID: 7400000, guid: d9fea7b3a4367be4fae9ead07c4a201c, type: 2}
+  _bendStateName: Base Layer.RodBend
+  _holdNormalizedTime: 0.5
+  _windUpRotationOffset: {x: -20, y: 0, z: 0}
+  _castRotationOffset: {x: 7, y: 0, z: 0}
+  _windUpDuration: 0.5
+  _castDuration: 0.15
+  _returnDuration: 0.3
 --- !u!1 &235390580870923383
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,10 +589,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 62f6c94c05a8c424fb78ad7da730df26, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4706757805454015130}
   m_SourcePrefab: {fileID: 100100000, guid: 62f6c94c05a8c424fb78ad7da730df26, type: 3}
 --- !u!4 &3679454630730506453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 62f6c94c05a8c424fb78ad7da730df26, type: 3}
   m_PrefabInstance: {fileID: 3790541050295535422}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4061082281046702703 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 62f6c94c05a8c424fb78ad7da730df26, type: 3}
+  m_PrefabInstance: {fileID: 3790541050295535422}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4706757805454015130
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4061082281046702703}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3aebca240767f0744af0db8136ca2a4d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
   debugView: 0
   debugSectionsChannels: 7
   debugPerceptualSections: 0
-  discontinuityInput: 11
+  discontinuityInput: 3
   depthSensitivity: 0.29
   depthDistanceModulation: 0.672
   grazingAngleMaskPower: 0.648

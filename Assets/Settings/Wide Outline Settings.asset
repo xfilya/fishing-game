@@ -19,14 +19,14 @@ MonoBehaviour:
   materialType: 0
   customMaterial: {fileID: 0}
   widthControl: 0
-  sharedWidth: 20
+  sharedWidth: 3.3
   gap: 0
   blendMode: 0
   customDepthBuffer: 0
   silhouetteBufferFormat: 0
   occludedColor: {r: 1, g: 0, b: 0, a: 1}
   clearStencil: 0
-  scaleWithResolution: 0
+  scaleWithResolution: 1
   referenceResolution: 2
   customResolution: 0
 --- !u!114 &5355445855571093894
@@ -64,5 +64,5 @@ MonoBehaviour:
   alphaCutoutUVTransform: {x: 0, y: 0, z: 0, w: 0}
   gpuInstancing: 0
   vertexAnimation: 0
-  color: {r: 0, g: 1, b: 0, a: 1}
+  color: {r: 0, g: 0, b: 0, a: 1}
   width: 20
