@@ -10,22 +10,43 @@ public sealed class Player : MonoBehaviour
     [SerializeField] private PlayerJump _jump;
     [SerializeField] private PlayerSprint _sprint;
 
+    private IInputService _inputService;
+    private UIService _uiService;
+
     private bool _respawnRequested;
+
+    private bool _isMenuOpen = false;
 
     [Inject]
     public void Construct(
         IInputService inputService,
-        PlayerConfig playerConfig)
+        PlayerConfig playerConfig,
+        UIService uiService)
     {
         _movement.Initialize(inputService, playerConfig);
         _playerCamera.Initialize(inputService, playerConfig);
         _jump.Initialize(inputService, playerConfig, _movement);
         _sprint.Initialize(inputService, playerConfig, _movement, _playerCamera);
+
+        _inputService = inputService;
+        _uiService = uiService;
     }
 
     private void Start()
     {
         MoveToSpawnPoint();
+    }
+
+    private void Update()
+    {
+        if (_inputService == null)
+            return;
+
+        if (_inputService.EscapePressedThisFrame)
+        {
+            _isMenuOpen = !_isMenuOpen;
+            EscapePressed(_isMenuOpen);
+        }
     }
 
     private void LateUpdate()
@@ -48,4 +69,11 @@ public sealed class Player : MonoBehaviour
         if (other.TryGetComponent<WaterFlag>(out _))
             _respawnRequested = true;
     }
+
+    private void EscapePressed(bool isMenuOpen)
+    {
+        _playerCamera.enabled = !isMenuOpen;
+        _uiService.OpenMenu(isMenuOpen);
+    }
+    
 }

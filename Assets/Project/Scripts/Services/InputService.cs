@@ -21,6 +21,9 @@ public class InputService : IInputService, IDisposable
     public bool SprintHeld => 
         _actions.Player.Sprint.IsPressed();
 
+    public bool EscapePressedThisFrame =>
+        _actions.Player.Escape.WasPressedThisFrame();
+
     public InputService()
     {
         _actions = new InputSystem_Actions();

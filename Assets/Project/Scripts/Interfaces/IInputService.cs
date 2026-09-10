@@ -9,4 +9,5 @@ public interface IInputService
 
     bool JumpPressedThisFrame { get; }
     bool SprintHeld { get; }
+    bool EscapePressedThisFrame { get; }
 }

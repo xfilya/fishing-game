@@ -12,6 +12,7 @@ public class GameLifetimeScope : LifetimeScope
 
         builder.Register<IInputService, InputService>(Lifetime.Singleton);
 
+        builder.RegisterComponentInHierarchy<UIService>();
         builder.RegisterComponentInHierarchy<Player>();
     }
 }

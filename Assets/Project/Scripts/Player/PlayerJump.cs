@@ -4,6 +4,7 @@ using UnityEngine;
 public sealed class PlayerJump : MonoBehaviour
 {
     public event Action OnJump;
+    public event Action OnLand;
 
     private IInputService _input;
     private PlayerConfig _config;
