@@ -15,5 +15,6 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<UIService>();
         builder.RegisterComponentInHierarchy<Player>();
         builder.RegisterComponentInHierarchy<PauseController>();
+        builder.RegisterComponentInHierarchy<FishingController>();
     }
 }

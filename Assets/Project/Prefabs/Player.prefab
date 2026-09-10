@@ -304,6 +304,7 @@ GameObject:
   - component: {fileID: 6467566734970918940}
   - component: {fileID: 6562260110942185381}
   - component: {fileID: 2752302475821063078}
+  - component: {fileID: 582100209808882457}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -420,6 +421,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff37d40b7f131f4081f4ed567e8b93b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSprint
+--- !u!114 &582100209808882457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4565284173107946131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9613add8e0286c47b7ae4ed0b685408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingController
+  _rodView: {fileID: 4668143250166427722}
 --- !u!1 &5744381100744859607
 GameObject:
   m_ObjectHideFlags: 0
