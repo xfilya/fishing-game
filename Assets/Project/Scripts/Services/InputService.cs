@@ -6,23 +6,42 @@ public class InputService : IInputService, IDisposable
 {
     private readonly InputSystem_Actions _actions;
 
-    public Vector2 Movement =>
-        _actions.Player.Move.ReadValue<Vector2>();
+    private bool _gameplayEnabled = true;
 
-    public Vector2 Look => 
-        _actions.Player.Look.ReadValue<Vector2>();
-
-    public bool IsMouse => 
+    public bool IsMouse =>
         _actions.Player.Look.activeControl?.device is Mouse;
+        
+    public Vector2 Movement =>
+        _gameplayEnabled
+        ? _actions.Player.Move.ReadValue<Vector2>()
+        : Vector2.zero;
 
-    public bool JumpPressedThisFrame => 
+    public Vector2 Look =>
+        _gameplayEnabled
+            ? _actions.Player.Look.ReadValue<Vector2>()
+            : Vector2.zero;
+
+    public bool JumpPressedThisFrame =>
+        _gameplayEnabled &&
         _actions.Player.Jump.WasPressedThisFrame();
 
-    public bool SprintHeld => 
+    public bool SprintHeld =>
+        _gameplayEnabled &&
         _actions.Player.Sprint.IsPressed();
+
+    public bool PrimaryActionPressedThisFrame =>
+        _gameplayEnabled &&
+        _actions.Player.Attack.WasPressedThisFrame();
 
     public bool EscapePressedThisFrame =>
         _actions.Player.Escape.WasPressedThisFrame();
+
+
+
+    public void SetGameplayEnabled(bool isEnabled)
+    {
+        _gameplayEnabled = isEnabled;
+    }
 
     public InputService()
     {

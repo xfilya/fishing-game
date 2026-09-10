@@ -48,7 +48,6 @@ public sealed class PlayerCamera : MonoBehaviour
 
     private void Look()
     {
-
         Vector2 look = _input.Look;
 
         float yaw;

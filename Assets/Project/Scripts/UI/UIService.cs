@@ -12,7 +12,5 @@ public class UIService : MonoBehaviour
 
         if (_menu != null)
             _menu.SetActive(isOpen);
-
-        Time.timeScale = isOpen ? 0f : 1f;
     }
 }
