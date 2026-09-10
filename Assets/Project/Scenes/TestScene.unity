@@ -892,6 +892,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -28.947002
       objectReference: {fileID: 0}
+    - target: {fileID: 2223342266658246940, guid: 3b290065ab77e714d91b7f9e02c830d7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2280174818400361212, guid: 3b290065ab77e714d91b7f9e02c830d7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 28.206999
@@ -4757,7 +4761,8 @@ GameObject:
   - component: {fileID: 1317614429}
   - component: {fileID: 1317614433}
   - component: {fileID: 1317614434}
-  m_Layer: 0
+  - component: {fileID: 1317614435}
+  m_Layer: 4
   m_Name: WATER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4851,8 +4856,8 @@ Transform:
   m_GameObject: {fileID: 1317614428}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.1, y: 8.8, z: 5.5}
-  m_LocalScale: {x: 500, y: 0.6816, z: 500}
+  m_LocalPosition: {x: 7.1, y: -26.0713, z: 5.5}
+  m_LocalScale: {x: 500, y: 70.42413, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4896,6 +4901,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80ae53a42e4740c4bba7302ff2bbf2f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaterFlag
+--- !u!114 &1317614435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1317614428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aed4c19c4e2f4e91a0be5b923d6c93d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FishingWater
+  _surface: {fileID: 1478786051}
+  _heightOffset: 0
+  _waterObject: {fileID: 1478786048}
+  _waveProfile: {fileID: 0}
 --- !u!4 &1329028415 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6572647986970691425, guid: 7147fdf1afa74f39994f19dfabf216f3, type: 3}
@@ -5458,6 +5479,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1464193451}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1478786048 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2057843560406691732, guid: 0c18333fb257e1449b879180f529986f, type: 3}
+  m_PrefabInstance: {fileID: 1054202206}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 079d48f7ea5dc054a8b2cd9151030ee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1478786051 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2256107072568812797, guid: 0c18333fb257e1449b879180f529986f, type: 3}
+  m_PrefabInstance: {fileID: 1054202206}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1499422268 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6633096657879039436, guid: 685f9207bca0448086cc8acc15c15b1d, type: 3}
@@ -6237,6 +6274,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ba2f4314eef48eb8b35f0fe12b899c9, type: 3}
+--- !u!20 &1612886158 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8896282843362960122, guid: 31299f48e1fed87449462ee7ccda53e8, type: 3}
+  m_PrefabInstance: {fileID: 7686289256095487122}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1612915338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7502,6 +7544,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 582100209808882457, guid: 31299f48e1fed87449462ee7ccda53e8, type: 3}
+      propertyPath: _camera
+      value: 
+      objectReference: {fileID: 1612886158}
+    - target: {fileID: 582100209808882457, guid: 31299f48e1fed87449462ee7ccda53e8, type: 3}
+      propertyPath: _lineOrigin
+      value: 
+      objectReference: {fileID: 1790892247}
+    - target: {fileID: 582100209808882457, guid: 31299f48e1fed87449462ee7ccda53e8, type: 3}
+      propertyPath: _bobberPrefab
+      value: 
+      objectReference: {fileID: 2490322585819088276, guid: 8bf7c2d6447649e181774e29aac1aac7, type: 3}
+    - target: {fileID: 582100209808882457, guid: 31299f48e1fed87449462ee7ccda53e8, type: 3}
+      propertyPath: _castMask.m_Bits
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 949204153156886063, guid: 31299f48e1fed87449462ee7ccda53e8, type: 3}
       propertyPath: _spawnPoint
       value: 

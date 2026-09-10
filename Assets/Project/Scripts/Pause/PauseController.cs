@@ -18,6 +18,24 @@ public sealed class PauseController : MonoBehaviour
         _player = player;
     }
 
+    private void OnEnable()
+    {
+        _isPaused = false;
+        Time.timeScale = 1f;
+    }
+
+    private void Start()
+    {
+        SetPauseState(false);
+    }
+
+    private void OnDisable()
+    {
+        _isPaused = false;
+        Time.timeScale = 1f;
+        _inputService?.SetGameplayEnabled(true);
+    }
+
     private void Update()
     {
         if (_inputService == null)
@@ -32,6 +50,7 @@ public sealed class PauseController : MonoBehaviour
     private void SetPauseState(bool isPaused)
     {
         _isPaused = isPaused;
+        _inputService.SetGameplayEnabled(!isPaused);
         _uiService.OpenMenu(isPaused);
         _player.EnableCamera(!isPaused);
         Time.timeScale = isPaused ? 0f : 1f;
