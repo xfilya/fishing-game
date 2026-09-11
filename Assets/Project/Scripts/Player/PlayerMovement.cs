@@ -8,6 +8,8 @@ public sealed class PlayerMovement : MonoBehaviour
     public float VerticalVelocity { get; private set; }
     public float MoveSpeed => _config.BaseSpeed * SpeedMultiplier;
 
+    private bool _isMovementEnabled = true;
+
 
     private PlayerConfig _config;
     private IInputService _inputService;
@@ -36,7 +38,7 @@ public sealed class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        Vector2 inputDirection = _inputService.Movement;
+        Vector2 inputDirection = _isMovementEnabled ? _inputService.Movement : Vector2.zero;
         Vector3 direction = transform.right * inputDirection.x + transform.forward * inputDirection.y;
 
         direction = Vector3.ClampMagnitude(direction, 1f);
@@ -76,5 +78,8 @@ public sealed class PlayerMovement : MonoBehaviour
 
         CharacterController.enabled = true;
     }
+
+    public void SetMovementEnabled(bool isEnabled)
+        => _isMovementEnabled = isEnabled;
     
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using VContainer;
 
@@ -9,6 +10,7 @@ public sealed class Player : MonoBehaviour
     [SerializeField] private PlayerCamera _playerCamera;
     [SerializeField] private PlayerJump _jump;
     [SerializeField] private PlayerSprint _sprint;
+    [SerializeField] private FishingController _fishingController;
 
     private bool _respawnRequested;
 
@@ -22,6 +24,32 @@ public sealed class Player : MonoBehaviour
         _playerCamera.Initialize(inputService, playerConfig);
         _jump.Initialize(inputService, playerConfig, _movement);
         _sprint.Initialize(inputService, playerConfig, _movement, _playerCamera);
+    }
+
+    private void OnEnable()
+    {
+        _fishingController.CastBegan += OnFishingCastBegan;
+        _fishingController.BeginReturned += OnFishingBeginReturned;
+    }
+
+    private void OnDisable()
+    {
+        _fishingController.CastBegan -= OnFishingCastBegan;
+        _fishingController.BeginReturned -= OnFishingBeginReturned;
+    }
+
+    private void OnFishingBeginReturned()
+    {
+        _movement.SetMovementEnabled(true);
+        _jump.enabled = true;
+        _sprint.enabled = true;
+    }
+
+    private void OnFishingCastBegan()
+    {
+        _movement.SetMovementEnabled(false);
+        _jump.enabled = false;
+        _sprint.enabled = false;
     }
 
     private void Start()

@@ -38,6 +38,8 @@ public sealed class FishingController : MonoBehaviour
     private bool _bobberReturned;
     private bool _caughtFish;
 
+    public event Action CastBegan;
+    public event Action BeginReturned;
     public event Action CatchCompleted;
 
     public FishingState State => _state;
@@ -153,6 +155,9 @@ public sealed class FishingController : MonoBehaviour
         _caughtFish = false;
         _state = FishingState.Casting;
         _rodView.PlayCast();
+
+        CastBegan?.Invoke();
+        Debug.Log($"[FishingController] Начало заброса: цель {_castTarget} в воде {_castWater.name}");
     }
 
     private void OnCastReleased()
@@ -165,6 +170,7 @@ public sealed class FishingController : MonoBehaviour
         _bobber.Retrieved += OnBobberRetrieved;
         _bobber.Launch(_lineOrigin, _castTarget, _flightDuration, _castWater);
         _castTimeoutRoutine = StartCoroutine(CastTimeoutRoutine());
+
     }
 
     private void OnBobberEnteredWater(Bobber bobber)
@@ -201,6 +207,9 @@ public sealed class FishingController : MonoBehaviour
             _bobber.BeginReel(_reelSpeed);
         else
             _bobberReturned = true;
+
+        BeginReturned?.Invoke();
+        Debug.Log($"[FishingController] Начало возврата: {(caughtFish ? "поймана рыба" : "рыба не поймана")}");
     }
 
     private void OnRodReturned()
