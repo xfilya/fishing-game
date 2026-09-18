@@ -19,6 +19,8 @@ public sealed class FishingController : MonoBehaviour
     [SerializeField] private Camera _camera;
     [SerializeField] private Transform _lineOrigin;
     [SerializeField] private Bobber _bobberPrefab;
+    [SerializeField] private ParticleSystem _biteEffectPrefab;
+    [SerializeField] private Vector3 _biteEffectOffset = new(0f, 0.02f, 0f);
     [SerializeField] private LayerMask _castMask = ~0;
     [SerializeField, Min(1f)] private float _maxCastDistance = 30f;
     [SerializeField, Min(0.1f)] private float _flightDuration = 0.7f;
@@ -32,6 +34,7 @@ public sealed class FishingController : MonoBehaviour
     private Bobber _bobber;
     private Vector3 _castTarget;
     private FishingWater _castWater;
+    private ParticleSystem _biteEffect;
     private Coroutine _castTimeoutRoutine;
     private Coroutine _biteWindowRoutine;
     private bool _rodReturned;
@@ -87,6 +90,7 @@ public sealed class FishingController : MonoBehaviour
         }
 
         StopFishingRoutines();
+        StopBiteEffect();
 
         if (_bobber != null)
         {
@@ -114,6 +118,12 @@ public sealed class FishingController : MonoBehaviour
 
         if (_input.PrimaryActionPressedThisFrame)
             HandlePrimaryAction();
+    }
+
+    private void LateUpdate()
+    {
+        if (_biteEffect != null && _bobber != null)
+            _biteEffect.transform.position = GetBiteEffectPosition();
     }
 
     private void HandlePrimaryAction()
@@ -190,6 +200,7 @@ public sealed class FishingController : MonoBehaviour
 
         _state = FishingState.BiteWindow;
         _bobber.Dip(_biteImpulse);
+        StartBiteEffect();
         _biteWindowRoutine = StartCoroutine(BiteWindowRoutine());
     }
 
@@ -199,6 +210,7 @@ public sealed class FishingController : MonoBehaviour
             return;
 
         StopFishingRoutines();
+        StopBiteEffect();
         _caughtFish = caughtFish;
         _state = FishingState.Reeling;
         _rodView.PlayReturn();
@@ -294,6 +306,38 @@ public sealed class FishingController : MonoBehaviour
     {
         StopRoutine(ref _castTimeoutRoutine);
         StopRoutine(ref _biteWindowRoutine);
+    }
+
+    private void StartBiteEffect()
+    {
+        StopBiteEffect();
+
+        if (_biteEffectPrefab == null || _bobber == null)
+            return;
+
+        _biteEffect = Instantiate(_biteEffectPrefab, GetBiteEffectPosition(), Quaternion.identity);
+        ParticleSystem.MainModule main = _biteEffect.main;
+        main.loop = true;
+        _biteEffect.Play(true);
+    }
+
+    private void StopBiteEffect()
+    {
+        if (_biteEffect == null)
+            return;
+
+        Destroy(_biteEffect.gameObject);
+        _biteEffect = null;
+    }
+
+    private Vector3 GetBiteEffectPosition()
+    {
+        Vector3 position = _bobber.transform.position;
+
+        if (_castWater != null)
+            position.y = _castWater.GetHeight(position);
+
+        return position + _biteEffectOffset;
     }
 
     private void ResetRuntimeState()
