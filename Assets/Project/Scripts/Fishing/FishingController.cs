@@ -20,22 +20,29 @@ public sealed class FishingController : MonoBehaviour
     [SerializeField] private Transform _lineOrigin;
     [SerializeField] private Bobber _bobberPrefab;
     [SerializeField] private ParticleSystem _biteEffectPrefab;
-    [SerializeField] private Vector3 _biteEffectOffset = new(0f, 0.02f, 0f);
+    [SerializeField] private Vector3 _biteEffectOffset = new(0f, 0.18f, 0f);
     [SerializeField] private LayerMask _castMask = ~0;
     [SerializeField, Min(1f)] private float _maxCastDistance = 30f;
     [SerializeField, Min(0.1f)] private float _flightDuration = 0.7f;
     [SerializeField, Min(0.1f)] private float _reelSpeed = 15f;
     [SerializeField, Min(0.1f)] private float _castTimeout = 3f;
     [SerializeField, Min(0.1f)] private float _biteWindowDuration = 1f;
-    [SerializeField, Min(0f)] private float _biteImpulse = 2.5f;
+    [SerializeField, Min(0.1f)] private float _shadowAttractionRadius = 6f;
+    [SerializeField, Min(0f)] private float _minimumBiteDelay = 0.65f;
+    [SerializeField, Min(0f)] private float _maximumBiteDelay = 1.4f;
 
     private IInputService _input;
+    private CatchGenerator _catchGenerator;
+    private ProgressService _progress;
+    private FishShadowSpawner _shadowSpawner;
     private FishingState _state = FishingState.Ready;
     private Bobber _bobber;
+    private FishShadow _attractedShadow;
     private Vector3 _castTarget;
     private FishingWater _castWater;
     private ParticleSystem _biteEffect;
     private Coroutine _castTimeoutRoutine;
+    private Coroutine _biteDelayRoutine;
     private Coroutine _biteWindowRoutine;
     private bool _rodReturned;
     private bool _bobberReturned;
@@ -44,13 +51,18 @@ public sealed class FishingController : MonoBehaviour
     public event Action CastBegan;
     public event Action BeginReturned;
     public event Action CatchCompleted;
+    public event Action<CaughtFish> CatchResolved;
+    public event Action ResultClosed;
 
     public FishingState State => _state;
 
     [Inject]
-    public void Construct(IInputService inputService)
+    public void Construct(IInputService inputService, CatchGenerator catchGenerator, ProgressService progress, FishShadowSpawner shadowSpawner)
     {
         _input = inputService;
+        _catchGenerator = catchGenerator;
+        _progress = progress;
+        _shadowSpawner = shadowSpawner;
     }
 
     private void Awake()
@@ -91,6 +103,7 @@ public sealed class FishingController : MonoBehaviour
 
         StopFishingRoutines();
         StopBiteEffect();
+        ReleaseAttractedShadow();
 
         if (_bobber != null)
         {
@@ -105,7 +118,7 @@ public sealed class FishingController : MonoBehaviour
 
     private void Start()
     {
-        if (_input != null)
+        if (_input != null && _catchGenerator != null && _progress != null && _shadowSpawner != null)
             return;
 
         enabled = false;
@@ -190,6 +203,16 @@ public sealed class FishingController : MonoBehaviour
 
         StopRoutine(ref _castTimeoutRoutine);
         _state = FishingState.Waiting;
+
+        TryAttractShadow();
+    }
+
+    private void TryAttractShadow()
+    {
+        if (_bobber != null && _shadowSpawner.TryAttractClosest(_bobber, _shadowAttractionRadius, OnShadowReachedBobber, out _attractedShadow))
+            Debug.Log($"[FishingController] Тень рыбы заметила поплавок на расстоянии до {_shadowAttractionRadius:0.0} м");
+        else
+            Debug.Log("[FishingController] Рядом с поплавком нет тени рыбы, поклёвки не будет");
     }
 
     [ContextMenu("Test Bite")]
@@ -198,8 +221,9 @@ public sealed class FishingController : MonoBehaviour
         if (_state != FishingState.Waiting)
             return;
 
+        ConsumeAttractedShadow();
         _state = FishingState.BiteWindow;
-        _bobber.Dip(_biteImpulse);
+        _bobber.Dip();
         StartBiteEffect();
         _biteWindowRoutine = StartCoroutine(BiteWindowRoutine());
     }
@@ -211,6 +235,10 @@ public sealed class FishingController : MonoBehaviour
 
         StopFishingRoutines();
         StopBiteEffect();
+
+        if (!caughtFish)
+            ReleaseAttractedShadow();
+
         _caughtFish = caughtFish;
         _state = FishingState.Reeling;
         _rodView.PlayReturn();
@@ -250,8 +278,11 @@ public sealed class FishingController : MonoBehaviour
 
         if (_caughtFish)
         {
+            CaughtFish caughtFish = _catchGenerator.Generate();
+            _progress.RegisterCatch(caughtFish);
             _state = FishingState.Result;
             CatchCompleted?.Invoke();
+            CatchResolved?.Invoke(caughtFish);
             return;
         }
 
@@ -260,8 +291,11 @@ public sealed class FishingController : MonoBehaviour
 
     public void CompleteResult()
     {
-        if (_state == FishingState.Result)
-            _state = FishingState.Ready;
+        if (_state != FishingState.Result)
+            return;
+
+        _state = FishingState.Ready;
+        ResultClosed?.Invoke();
     }
 
     private bool TryGetCastTarget(out Vector3 target, out FishingWater water)
@@ -299,13 +333,65 @@ public sealed class FishingController : MonoBehaviour
         _biteWindowRoutine = null;
 
         if (_state == FishingState.BiteWindow)
-            BeginReturn(false);
+            CompleteMissedBite();
+    }
+
+    private void CompleteMissedBite()
+    {
+        StopBiteEffect();
+
+        if (_bobber != null)
+            _bobber.ReleaseBite();
+
+        _state = FishingState.Waiting;
+        TryAttractShadow();
+        Debug.Log("[FishingController] Рыба сорвалась, поплавок возвращается на поверхность");
     }
 
     private void StopFishingRoutines()
     {
         StopRoutine(ref _castTimeoutRoutine);
+        StopRoutine(ref _biteDelayRoutine);
         StopRoutine(ref _biteWindowRoutine);
+    }
+
+    private void OnShadowReachedBobber(FishShadow shadow)
+    {
+        if (_state != FishingState.Waiting || shadow != _attractedShadow)
+        {
+            shadow.Release();
+            return;
+        }
+
+        StopRoutine(ref _biteDelayRoutine);
+        _biteDelayRoutine = StartCoroutine(BiteDelayRoutine());
+    }
+
+    private IEnumerator BiteDelayRoutine()
+    {
+        yield return new WaitForSeconds(UnityEngine.Random.Range(_minimumBiteDelay, _maximumBiteDelay));
+        _biteDelayRoutine = null;
+
+        if (_state == FishingState.Waiting)
+            NotifyBiteStarted();
+    }
+
+    private void ReleaseAttractedShadow()
+    {
+        if (_attractedShadow == null)
+            return;
+
+        _attractedShadow.Release();
+        _attractedShadow = null;
+    }
+
+    private void ConsumeAttractedShadow()
+    {
+        if (_attractedShadow == null)
+            return;
+
+        _attractedShadow.Consume();
+        _attractedShadow = null;
     }
 
     private void StartBiteEffect()
@@ -315,10 +401,13 @@ public sealed class FishingController : MonoBehaviour
         if (_biteEffectPrefab == null || _bobber == null)
             return;
 
-        _biteEffect = Instantiate(_biteEffectPrefab, GetBiteEffectPosition(), Quaternion.identity);
-        ParticleSystem.MainModule main = _biteEffect.main;
-        main.loop = true;
-        _biteEffect.Play(true);
+        _biteEffect = Instantiate(_biteEffectPrefab, GetBiteEffectPosition(), _biteEffectPrefab.transform.rotation);
+
+        foreach (ParticleSystem system in _biteEffect.GetComponentsInChildren<ParticleSystem>(true))
+        {
+            system.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            system.Play(true);
+        }
     }
 
     private void StopBiteEffect()
@@ -345,6 +434,7 @@ public sealed class FishingController : MonoBehaviour
         _state = FishingState.Ready;
         _castTarget = default;
         _castWater = null;
+        _attractedShadow = null;
         _rodReturned = false;
         _bobberReturned = false;
         _caughtFish = false;
@@ -370,5 +460,10 @@ public sealed class FishingController : MonoBehaviour
         }
 
         return null;
+    }
+
+    private void OnValidate()
+    {
+        _maximumBiteDelay = Mathf.Max(_minimumBiteDelay, _maximumBiteDelay);
     }
 }

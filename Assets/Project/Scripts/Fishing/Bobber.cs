@@ -10,12 +10,16 @@ public sealed class Bobber : MonoBehaviour
     [SerializeField] private FishingLineView _lineView;
     [SerializeField, Min(0f)] private float _waterSlack = 0.35f;
     [SerializeField, Min(0f)] private float _buoyancy = 300f;
-    [SerializeField, Min(0f)] private float _waterDrag = 12f;
+    [SerializeField, Min(0f)] private float _waterDrag = 28f;
+    [SerializeField, Min(0.1f)] private float _maximumWaterVerticalSpeed = 0.8f;
     [SerializeField, Min(0f)] private float _floatingDepth = 0.01f;
     [SerializeField, Min(0f)] private float _tensionStiffness = 60f;
     [SerializeField, Min(0f)] private float _tensionDamping = 8f;
     [SerializeField, Min(0f)] private float _maxTensionAcceleration = 100f;
     [SerializeField, Min(0.01f)] private float _maxSubmersionDepth = 0.05f;
+    [SerializeField, Min(0f)] private float _biteSubmersionDepth = 0.3f;
+    [SerializeField, Min(0.01f)] private float _biteSubmergeSpeed = 0.75f;
+    [SerializeField, Min(0.01f)] private float _biteRecoverySpeed = 0.55f;
     [SerializeField, Min(0.01f)] private float _retrieveDistance = 0.25f;
 
     private FishingWater _water;
@@ -23,10 +27,12 @@ public sealed class Bobber : MonoBehaviour
     private Transform _lineOrigin;
     private float _lineLength;
     private float _reelSpeed;
+    private float _biteDepthOffset;
     private bool _isDeploying;
     private bool _isReeling;
     private bool _retrieved;
     private bool _hasEnteredWater;
+    private bool _biteActive;
 
     public event Action<Bobber> WaterEntered;
     public event Action<Bobber> Retrieved;
@@ -62,6 +68,8 @@ public sealed class Bobber : MonoBehaviour
         _isReeling = false;
         _retrieved = false;
         _hasEnteredWater = false;
+        _biteDepthOffset = 0f;
+        _biteActive = false;
         _rigidbody.isKinematic = false;
         _rigidbody.useGravity = true;
         transform.position = lineOrigin.position;
@@ -78,17 +86,29 @@ public sealed class Bobber : MonoBehaviour
         _isDeploying = false;
         _isReeling = true;
         _water = null;
+        _biteDepthOffset = 0f;
+        _biteActive = false;
         _rigidbody.useGravity = false;
         _rigidbody.linearVelocity = Vector3.zero;
         _rigidbody.angularVelocity = Vector3.zero;
     }
 
-    public void Dip(float impulse)
+    public void Dip()
     {
         if (_retrieved)
             return;
 
-        _rigidbody.AddForce(Vector3.down * impulse, ForceMode.VelocityChange);
+        _biteDepthOffset = Mathf.Max(_biteDepthOffset, _biteSubmersionDepth);
+        _biteActive = true;
+        _rigidbody.useGravity = false;
+        Vector3 velocity = _rigidbody.linearVelocity;
+        velocity.y = 0f;
+        _rigidbody.linearVelocity = velocity;
+    }
+
+    public void ReleaseBite()
+    {
+        _biteActive = false;
     }
 
     private void FixedUpdate()
@@ -110,10 +130,16 @@ public sealed class Bobber : MonoBehaviour
         if (_isDeploying)
             _lineLength = Mathf.Max(_lineLength, distance);
 
+        if (!_biteActive)
+            _biteDepthOffset = Mathf.MoveTowards(_biteDepthOffset, 0f, _biteRecoverySpeed * Time.fixedDeltaTime);
+
+        if (!_biteActive && _biteDepthOffset <= 0f)
+            _rigidbody.useGravity = true;
+
         if (_water != null)
             ApplyBuoyancy();
 
-        if (!_isDeploying)
+        if (!_isDeploying && _biteDepthOffset <= 0f)
             ApplyTension(distance);
 
         _lineView.SetLineLength(_lineLength);
@@ -136,7 +162,17 @@ public sealed class Bobber : MonoBehaviour
 
     private void ApplyBuoyancy()
     {
+        Vector3 velocity = _rigidbody.linearVelocity;
+        velocity.y = Mathf.Clamp(velocity.y, -_maximumWaterVerticalSpeed, _maximumWaterVerticalSpeed);
+        _rigidbody.linearVelocity = velocity;
         float surfaceHeight = _water.GetHeight(_buoyancyPoint.position);
+
+        if (_biteDepthOffset > 0f)
+        {
+            ApplyBitePosition(surfaceHeight);
+            return;
+        }
+
         float depth = surfaceHeight - _buoyancyPoint.position.y;
 
         if (depth <= 0f)
@@ -145,8 +181,8 @@ public sealed class Bobber : MonoBehaviour
         if (depth > _maxSubmersionDepth)
         {
             _rigidbody.position += Vector3.up * (depth - _maxSubmersionDepth);
-            Vector3 velocity = _rigidbody.linearVelocity;
-            _rigidbody.linearVelocity = new Vector3(velocity.x, Mathf.Max(0f, velocity.y), velocity.z);
+            Vector3 clampedVelocity = _rigidbody.linearVelocity;
+            _rigidbody.linearVelocity = new Vector3(clampedVelocity.x, 0f, clampedVelocity.z);
             depth = _maxSubmersionDepth;
         }
 
@@ -155,6 +191,19 @@ public sealed class Bobber : MonoBehaviour
         float force = -Physics.gravity.y + (targetHeight - _buoyancyPoint.position.y) * _buoyancy - pointVelocity.y * _waterDrag;
         _rigidbody.AddForceAtPosition(Vector3.up * Mathf.Max(0f, force), _buoyancyPoint.position, ForceMode.Acceleration);
         _rigidbody.AddForce(-new Vector3(pointVelocity.x, 0f, pointVelocity.z) * _waterDrag, ForceMode.Acceleration);
+    }
+
+    private void ApplyBitePosition(float surfaceHeight)
+    {
+        float targetHeight = surfaceHeight - _floatingDepth - _biteDepthOffset;
+        float speed = _biteActive ? _biteSubmergeSpeed : _biteRecoverySpeed;
+        Vector3 position = _rigidbody.position;
+        position.y += Mathf.Clamp(targetHeight - _buoyancyPoint.position.y, -speed * Time.fixedDeltaTime, speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(position);
+        Vector3 velocity = _rigidbody.linearVelocity;
+        _rigidbody.linearVelocity = new Vector3(velocity.x, 0f, velocity.z);
+        _rigidbody.angularVelocity = Vector3.MoveTowards(_rigidbody.angularVelocity, Vector3.zero, _waterDrag * Time.fixedDeltaTime);
+        _rigidbody.AddForce(-new Vector3(velocity.x, 0f, velocity.z) * _waterDrag, ForceMode.Acceleration);
     }
 
     private void ApplyTension(float distance)

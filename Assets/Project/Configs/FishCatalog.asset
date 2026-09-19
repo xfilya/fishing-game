@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28511f77b5231a48b6c90d4ecde15d7, type: 3}
+  m_Name: FishCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::FishCatalog
+  _fish:
+  - _id: clownfish
+    _displayName: "\u0420\u044B\u0431\u0430-\u043A\u043B\u043E\u0443\u043D"
+    _rarity: 0
+    _minimumWeight: 0.12
+    _maximumWeight: 0.65
+    _aquariumPrefab: {fileID: 5440476660054940829, guid: 7c609d199e833e64e80264c75b43688d, type: 3}
+    _aquariumScale: 3.1
+  - _id: guppy
+    _displayName: "\u0413\u0443\u043F\u043F\u0438"
+    _rarity: 0
+    _minimumWeight: 0.08
+    _maximumWeight: 0.42
+    _aquariumPrefab: {fileID: 3793146743532390487, guid: 89c7d56787878bd45a97b081a69b5b43, type: 3}
+    _aquariumScale: 3.4
+  - _id: needlefish
+    _displayName: "\u0421\u0430\u0440\u0433\u0430\u043D"
+    _rarity: 1
+    _minimumWeight: 0.7
+    _maximumWeight: 2.4
+    _aquariumPrefab: {fileID: 3793146743532390487, guid: 89c7d56787878bd45a97b081a69b5b43, type: 3}
+    _aquariumScale: 4.1
+  - _id: lionfish
+    _displayName: "\u041A\u0440\u044B\u043B\u0430\u0442\u043A\u0430"
+    _rarity: 1
+    _minimumWeight: 0.55
+    _maximumWeight: 1.8
+    _aquariumPrefab: {fileID: 5440476660054940829, guid: 7c609d199e833e64e80264c75b43688d, type: 3}
+    _aquariumScale: 3.7
+  - _id: mahi_mahi
+    _displayName: "\u0414\u043E\u0440\u0430\u0434\u043E"
+    _rarity: 2
+    _minimumWeight: 2.5
+    _maximumWeight: 8.5
+    _aquariumPrefab: {fileID: 3793146743532390487, guid: 89c7d56787878bd45a97b081a69b5b43, type: 3}
+    _aquariumScale: 4.8
+  - _id: royal_snapper
+    _displayName: "\u041A\u043E\u0440\u043E\u043B\u0435\u0432\u0441\u043A\u0438\u0439 \u043B\u0443\u0446\u0438\u0430\u043D"
+    _rarity: 2
+    _minimumWeight: 1.8
+    _maximumWeight: 6.2
+    _aquariumPrefab: {fileID: 5440476660054940829, guid: 7c609d199e833e64e80264c75b43688d, type: 3}
+    _aquariumScale: 4.5
+  - _id: black_marlin
+    _displayName: "\u0427\u0451\u0440\u043D\u044B\u0439 \u043C\u0430\u0440\u043B\u0438\u043D"
+    _rarity: 3
+    _minimumWeight: 18
+    _maximumWeight: 72
+    _aquariumPrefab: {fileID: 3793146743532390487, guid: 89c7d56787878bd45a97b081a69b5b43, type: 3}
+    _aquariumScale: 5.6
+  - _id: dreamfish
+    _displayName: "\u0420\u044B\u0431\u0430 \u043C\u0435\u0447\u0442\u044B"
+    _rarity: 3
+    _minimumWeight: 4
+    _maximumWeight: 14
+    _aquariumPrefab: {fileID: 5440476660054940829, guid: 7c609d199e833e64e80264c75b43688d, type: 3}
+    _aquariumScale: 5.2
+  _commonChance: 60
+  _rareChance: 25
+  _epicChance: 11
+  _legendaryChance: 4
+  _newSpeciesWeightMultiplier: 2.5

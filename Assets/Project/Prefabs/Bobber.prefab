@@ -356,12 +356,18 @@ MonoBehaviour:
   _lineView: {fileID: 6089341704227998857}
   _waterSlack: 0.35
   _buoyancy: 300
-  _waterDrag: 12
+  _biteBuoyancy: 90
+  _waterDrag: 28
+  _biteWaterDragMultiplier: 1
+  _maximumWaterVerticalSpeed: 0.8
   _floatingDepth: 0.01
   _tensionStiffness: 60
   _tensionDamping: 8
   _maxTensionAcceleration: 100
   _maxSubmersionDepth: 0.05
+  _biteSubmersionDepth: 0.3
+  _biteHoldDuration: 0.55
+  _biteRecoverySpeed: 0.55
   _retrieveDistance: 0.25
 --- !u!1 &4408080422768225897
 GameObject:

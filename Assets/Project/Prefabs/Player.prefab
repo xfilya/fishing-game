@@ -289,6 +289,37 @@ Transform:
   - {fileID: 8074737456397876766}
   m_Father: {fileID: 5741460259733930828}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4495143530516692989
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 52884964778072584}
+  m_Layer: 0
+  m_Name: LineOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 2800000, guid: 954de74b6fa234cfbb474898019e0acf, type: 3}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &52884964778072584
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4495143530516692989}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0321, y: -0.0721, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6654180016709930932}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4565284173107946131
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,6 +402,7 @@ MonoBehaviour:
   _playerCamera: {fileID: 6467566734970918940}
   _jump: {fileID: 6562260110942185381}
   _sprint: {fileID: 2752302475821063078}
+  _fishingController: {fileID: 582100209808882457}
 --- !u!114 &8110281961072962080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,6 +466,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishingController
   _rodView: {fileID: 4668143250166427722}
+  _camera: {fileID: 8896282843362960122}
+  _lineOrigin: {fileID: 52884964778072584}
+  _bobberPrefab: {fileID: 2490322585819088276, guid: 8bf7c2d6447649e181774e29aac1aac7, type: 3}
+  _biteEffectPrefab: {fileID: 4086568024860548633, guid: c6add58175d0bf64db4e73e54e109983, type: 3}
+  _biteEffectOffset: {x: 0, y: 0.02, z: 0}
+  _biteEffectInitialParticles: 8
+  _castMask:
+    serializedVersion: 2
+    m_Bits: 16
+  _maxCastDistance: 30
+  _flightDuration: 0.7
+  _reelSpeed: 15
+  _castTimeout: 3
+  _biteWindowDuration: 1
+  _biteImpulse: 0.2
+  _shadowAttractionRadius: 6
+  _minimumBiteDelay: 0.65
+  _maximumBiteDelay: 1.4
 --- !u!1 &5744381100744859607
 GameObject:
   m_ObjectHideFlags: 0
@@ -602,7 +652,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -1674546894155986806, guid: 62f6c94c05a8c424fb78ad7da730df26, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 52884964778072584}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 62f6c94c05a8c424fb78ad7da730df26, type: 3}
       insertIndex: -1
@@ -640,3 +693,8 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &6654180016709930932 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -1674546894155986806, guid: 62f6c94c05a8c424fb78ad7da730df26, type: 3}
+  m_PrefabInstance: {fileID: 3790541050295535422}
+  m_PrefabAsset: {fileID: 0}
