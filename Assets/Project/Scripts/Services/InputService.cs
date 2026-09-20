@@ -33,6 +33,9 @@ public class InputService : IInputService, IDisposable
         _gameplayEnabled &&
         _actions.Player.Attack.WasPressedThisFrame();
 
+    public bool InteractPressedThisFrame =>
+        _actions.Player.Interact.WasPressedThisFrame();
+
     public bool EscapePressedThisFrame =>
         _actions.Player.Escape.WasPressedThisFrame();
 

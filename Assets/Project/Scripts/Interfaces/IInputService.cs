@@ -11,5 +11,6 @@ public interface IInputService
     bool SprintHeld { get; }
     bool EscapePressedThisFrame { get; }
     bool PrimaryActionPressedThisFrame { get; }
+    bool InteractPressedThisFrame { get; }
     void SetGameplayEnabled(bool isEnabled);
 }

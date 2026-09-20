@@ -5,19 +5,22 @@ public sealed class CatchGenerator
 {
     private readonly FishCatalog _catalog;
     private readonly ProgressService _progress;
+    private readonly EconomyService _economy;
     private readonly List<FishDefinition> _rarityCandidates = new();
 
-    public CatchGenerator(FishCatalog catalog, ProgressService progress)
+    public CatchGenerator(FishCatalog catalog, ProgressService progress, EconomyService economy)
     {
         _catalog = catalog;
         _progress = progress;
+        _economy = economy;
     }
 
     public CaughtFish Generate()
     {
         FishRarity rarity = RollRarity();
         FishDefinition definition = RollDefinition(rarity);
-        float weight = Random.Range(definition.MinimumWeight, definition.MaximumWeight);
+        float normalizedWeight = Mathf.Pow(Random.value, 1f / Mathf.Max(1f, _economy.WeightBias));
+        float weight = Mathf.Lerp(definition.MinimumWeight, definition.MaximumWeight, normalizedWeight);
         return new CaughtFish(definition, weight);
     }
 
@@ -26,20 +29,34 @@ public sealed class CatchGenerator
         float totalChance = 0f;
 
         foreach (FishRarity rarity in System.Enum.GetValues(typeof(FishRarity)))
-            totalChance += _catalog.GetRarityChance(rarity);
+            totalChance += GetModifiedRarityChance(rarity);
 
         float roll = Random.Range(0f, totalChance);
         float accumulatedChance = 0f;
 
         foreach (FishRarity rarity in System.Enum.GetValues(typeof(FishRarity)))
         {
-            accumulatedChance += _catalog.GetRarityChance(rarity);
+            accumulatedChance += GetModifiedRarityChance(rarity);
 
             if (roll <= accumulatedChance)
                 return rarity;
         }
 
         return FishRarity.Common;
+    }
+
+    private float GetModifiedRarityChance(FishRarity rarity)
+    {
+        float luck = _economy.TotalRarityLuck;
+        float multiplier = rarity switch
+        {
+            FishRarity.Common => Mathf.Max(0.2f, 1f - luck * 0.02f),
+            FishRarity.Rare => 1f + luck * 0.025f,
+            FishRarity.Epic => 1f + luck * 0.04f,
+            FishRarity.Legendary => 1f + luck * 0.055f,
+            _ => 1f
+        };
+        return _catalog.GetRarityChance(rarity) * multiplier;
     }
 
     private FishDefinition RollDefinition(FishRarity rarity)

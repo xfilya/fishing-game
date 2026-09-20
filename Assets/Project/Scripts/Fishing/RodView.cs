@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -33,6 +34,8 @@ public sealed class RodView : MonoBehaviour
 
     private Coroutine _routine;
     private Tween _rotationTween;
+    private Renderer[] _colorRenderers;
+    private MaterialPropertyBlock _propertyBlock;
 
     private void Awake()
     {
@@ -48,8 +51,28 @@ public sealed class RodView : MonoBehaviour
 
         _defaultLocalRotation = _rotationRoot.localRotation;
         _bendStateHash = Animator.StringToHash(_bendStateName);
+        CacheColorRenderers();
 
         SetBendPose(0f);
+    }
+
+    public void ApplyColor(Color color)
+    {
+        if (_colorRenderers == null)
+            CacheColorRenderers();
+
+        _propertyBlock ??= new MaterialPropertyBlock();
+
+        foreach (Renderer renderer in _colorRenderers)
+        {
+            if (renderer == null)
+                continue;
+
+            renderer.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetColor("_BaseColor", color);
+            _propertyBlock.SetColor("_Color", color);
+            renderer.SetPropertyBlock(_propertyBlock);
+        }
     }
 
     public void PlayCast()
@@ -177,5 +200,20 @@ public sealed class RodView : MonoBehaviour
     private void OnDestroy()
     {
         _rotationTween?.Kill();
+    }
+
+    private void CacheColorRenderers()
+    {
+        List<Renderer> renderers = new();
+
+        foreach (Renderer renderer in GetComponentsInChildren<Renderer>(true))
+        {
+            if (renderer is LineRenderer || renderer.sharedMaterial == null || !renderer.sharedMaterial.name.Contains("rod06", StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            renderers.Add(renderer);
+        }
+
+        _colorRenderers = renderers.ToArray();
     }
 }

@@ -33,6 +33,8 @@ public sealed class Bobber : MonoBehaviour
     private bool _retrieved;
     private bool _hasEnteredWater;
     private bool _biteActive;
+    private MeshRenderer[] _colorRenderers;
+    private MaterialPropertyBlock _propertyBlock;
 
     public event Action<Bobber> WaterEntered;
     public event Action<Bobber> Retrieved;
@@ -54,9 +56,23 @@ public sealed class Bobber : MonoBehaviour
             _lineView = GetComponent<FishingLineView>();
 
         _rigidbody.centerOfMass = new Vector3(0f, -0.04f, 0f);
+        _colorRenderers = GetComponentsInChildren<MeshRenderer>(true);
         _rigidbody.isKinematic = true;
         _rigidbody.useGravity = false;
         _lineView.Detach();
+    }
+
+    public void ApplyColor(Color color)
+    {
+        _propertyBlock ??= new MaterialPropertyBlock();
+
+        foreach (MeshRenderer renderer in _colorRenderers)
+        {
+            renderer.GetPropertyBlock(_propertyBlock);
+            _propertyBlock.SetColor("_BaseColor", color);
+            _propertyBlock.SetColor("_Color", color);
+            renderer.SetPropertyBlock(_propertyBlock);
+        }
     }
 
     public void Launch(Transform lineOrigin, Vector3 target, float flightDuration, FishingWater targetWater)

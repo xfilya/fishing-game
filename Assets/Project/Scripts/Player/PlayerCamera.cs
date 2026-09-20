@@ -79,6 +79,9 @@ public sealed class PlayerCamera : MonoBehaviour
     {
         float targetFov = isSprinting ? _defaultFov + _config.SprintFovOffset : _defaultFov;
 
+        if (_fovTween == null && Mathf.Approximately(_camera.fieldOfView, targetFov))
+            return;
+
         _fovTween?.Kill();
 
         _fovTween = _camera.DOFieldOfView(targetFov, _config.SprintTransitionSpeed).SetEase(Ease.OutSine);

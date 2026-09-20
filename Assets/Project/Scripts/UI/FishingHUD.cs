@@ -16,12 +16,14 @@ public sealed class FishingHUD : MonoBehaviour
     private readonly Dictionary<string, int> _speciesCounts = new();
     private FishingController _fishingController;
     private ProgressService _progress;
+    private EconomyService _economy;
 
     [Inject]
-    public void Construct(FishingController fishingController, ProgressService progress)
+    public void Construct(FishingController fishingController, ProgressService progress, EconomyService economy)
     {
         _fishingController = fishingController;
         _progress = progress;
+        _economy = economy;
     }
 
     private void Start()
@@ -56,7 +58,7 @@ public sealed class FishingHUD : MonoBehaviour
         string color = GetRarityColor(caughtFish.Definition.Rarity);
         _catchName.text = caughtFish.Definition.DisplayName;
         _catchDetails.text = $"<color=#{color}>{GetRarityName(caughtFish.Definition.Rarity)}</color>  •  {caughtFish.Weight:0.00} кг";
-        _catchStatus.text = caughtFish.IsNewSpecies ? "Новый вид отправлен в аквариум" : "Дубликат добавлен в инвентарь";
+        _catchStatus.text = caughtFish.IsNewSpecies ? "Новый вид отправлен в аквариум" : caughtFish.IsNewRecord ? "Новый рекорд  •  Прошлый экземпляр отправлен в инвентарь" : $"Дубликат в инвентаре  •  Цена {_economy.GetFishPrice(caughtFish):N0}";
         _catchPanel.SetActive(true);
     }
 

@@ -26,6 +26,7 @@ public sealed class AquariumController : MonoBehaviour
         }
 
         _progress.NewSpeciesAdded += OnNewSpeciesAdded;
+        _progress.ProgressReset += OnProgressReset;
 
         foreach (CaughtFish caughtFish in _progress.Collection)
             SpawnFish(caughtFish.Definition);
@@ -34,7 +35,10 @@ public sealed class AquariumController : MonoBehaviour
     private void OnDestroy()
     {
         if (_progress != null)
+        {
             _progress.NewSpeciesAdded -= OnNewSpeciesAdded;
+            _progress.ProgressReset -= OnProgressReset;
+        }
     }
 
     private void OnNewSpeciesAdded(CaughtFish caughtFish)
@@ -55,6 +59,7 @@ public sealed class AquariumController : MonoBehaviour
         GameObject fish = Instantiate(definition.AquariumPrefab, spawnPoint.position, spawnPoint.rotation, _fishContainer);
         fish.name = definition.DisplayName;
         fish.transform.localScale = Vector3.one * definition.AquariumScale;
+        ApplyRarityColor(fish, definition.Rarity);
 
         if (!fish.TryGetComponent(out FishMotion _))
         {
@@ -69,5 +74,33 @@ public sealed class AquariumController : MonoBehaviour
 
         wander.Initialize(_swimPoints);
         _spawnedFish.Add(definition.Id, fish);
+    }
+
+    private void OnProgressReset()
+    {
+        foreach (GameObject fish in _spawnedFish.Values)
+        {
+            if (fish != null)
+                Destroy(fish);
+        }
+
+        _spawnedFish.Clear();
+    }
+
+    private static void ApplyRarityColor(GameObject fish, FishRarity rarity)
+    {
+        Color color = FishRarityColors.Get(rarity);
+        MaterialPropertyBlock propertyBlock = new();
+
+        foreach (Renderer renderer in fish.GetComponentsInChildren<Renderer>(true))
+        {
+            if (renderer is ParticleSystemRenderer || renderer is LineRenderer)
+                continue;
+
+            renderer.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor("_BaseColor", color);
+            propertyBlock.SetColor("_Color", color);
+            renderer.SetPropertyBlock(propertyBlock);
+        }
     }
 }

@@ -3,6 +3,7 @@ public sealed class CaughtFish
     public FishDefinition Definition { get; }
     public float Weight { get; }
     public bool IsNewSpecies { get; private set; }
+    public bool IsNewRecord { get; private set; }
 
     public CaughtFish(FishDefinition definition, float weight)
     {
@@ -13,5 +14,10 @@ public sealed class CaughtFish
     public void MarkAsNewSpecies()
     {
         IsNewSpecies = true;
+    }
+
+    public void MarkAsNewRecord()
+    {
+        IsNewRecord = true;
     }
 }

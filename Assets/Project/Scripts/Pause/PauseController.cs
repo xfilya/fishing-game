@@ -6,16 +6,18 @@ public sealed class PauseController : MonoBehaviour
     private IInputService _inputService;
     private UIService _uiService;
     private Player _player;
+    private ShopUIController _shopUI;
 
 
     private bool _isPaused = false;
 
     [Inject]
-    public void Construct(IInputService inputService, UIService uiService, Player player)
+    public void Construct(IInputService inputService, UIService uiService, Player player, ShopUIController shopUI)
     {
         _inputService = inputService;
         _uiService = uiService;
         _player = player;
+        _shopUI = shopUI;
     }
 
     private void OnEnable()
@@ -43,6 +45,12 @@ public sealed class PauseController : MonoBehaviour
 
         if (_inputService.EscapePressedThisFrame)
         {
+            if (_shopUI != null && _shopUI.IsOpen)
+            {
+                _shopUI.Close();
+                return;
+            }
+
             SetPauseState(!_isPaused);
         }
     }
@@ -54,5 +62,10 @@ public sealed class PauseController : MonoBehaviour
         _uiService.OpenMenu(isPaused);
         _player.EnableCamera(!isPaused);
         Time.timeScale = isPaused ? 0f : 1f;
+    }
+
+    public void Resume()
+    {
+        SetPauseState(false);
     }
 }

@@ -30,10 +30,13 @@ public sealed class FishingController : MonoBehaviour
     [SerializeField, Min(0.1f)] private float _shadowAttractionRadius = 6f;
     [SerializeField, Min(0f)] private float _minimumBiteDelay = 0.65f;
     [SerializeField, Min(0f)] private float _maximumBiteDelay = 1.4f;
+    [SerializeField, Min(1)] private int _minimumVisibleBiteParticles = 6;
+    [SerializeField] private int _biteEffectSortingOrder = 20;
 
     private IInputService _input;
     private CatchGenerator _catchGenerator;
     private ProgressService _progress;
+    private EconomyService _economy;
     private FishShadowSpawner _shadowSpawner;
     private FishingState _state = FishingState.Ready;
     private Bobber _bobber;
@@ -41,6 +44,7 @@ public sealed class FishingController : MonoBehaviour
     private Vector3 _castTarget;
     private FishingWater _castWater;
     private ParticleSystem _biteEffect;
+    private ParticleSystem[] _biteEffectSystems;
     private Coroutine _castTimeoutRoutine;
     private Coroutine _biteDelayRoutine;
     private Coroutine _biteWindowRoutine;
@@ -57,12 +61,13 @@ public sealed class FishingController : MonoBehaviour
     public FishingState State => _state;
 
     [Inject]
-    public void Construct(IInputService inputService, CatchGenerator catchGenerator, ProgressService progress, FishShadowSpawner shadowSpawner)
+    public void Construct(IInputService inputService, CatchGenerator catchGenerator, ProgressService progress, FishShadowSpawner shadowSpawner, EconomyService economy)
     {
         _input = inputService;
         _catchGenerator = catchGenerator;
         _progress = progress;
         _shadowSpawner = shadowSpawner;
+        _economy = economy;
     }
 
     private void Awake()
@@ -118,10 +123,20 @@ public sealed class FishingController : MonoBehaviour
 
     private void Start()
     {
-        if (_input != null && _catchGenerator != null && _progress != null && _shadowSpawner != null)
+        if (_input == null || _catchGenerator == null || _progress == null || _shadowSpawner == null || _economy == null)
+        {
+            enabled = false;
             return;
+        }
 
-        enabled = false;
+        _economy.EquipmentChanged += OnEquipmentChanged;
+        ApplyEquipmentVisuals();
+    }
+
+    private void OnDestroy()
+    {
+        if (_economy != null)
+            _economy.EquipmentChanged -= OnEquipmentChanged;
     }
 
     private void Update()
@@ -136,7 +151,10 @@ public sealed class FishingController : MonoBehaviour
     private void LateUpdate()
     {
         if (_biteEffect != null && _bobber != null)
+        {
             _biteEffect.transform.position = GetBiteEffectPosition();
+            EnsureBiteEffectVisible();
+        }
     }
 
     private void HandlePrimaryAction()
@@ -189,6 +207,7 @@ public sealed class FishingController : MonoBehaviour
             return;
 
         _bobber = Instantiate(_bobberPrefab, _lineOrigin.position, Quaternion.identity);
+        _bobber.ApplyColor(_economy.EquippedBobber.Color);
         _bobber.WaterEntered += OnBobberEnteredWater;
         _bobber.Retrieved += OnBobberRetrieved;
         _bobber.Launch(_lineOrigin, _castTarget, _flightDuration, _castWater);
@@ -403,10 +422,16 @@ public sealed class FishingController : MonoBehaviour
 
         _biteEffect = Instantiate(_biteEffectPrefab, GetBiteEffectPosition(), _biteEffectPrefab.transform.rotation);
 
-        foreach (ParticleSystem system in _biteEffect.GetComponentsInChildren<ParticleSystem>(true))
+        _biteEffectSystems = _biteEffect.GetComponentsInChildren<ParticleSystem>(true);
+
+        foreach (ParticleSystem system in _biteEffectSystems)
         {
             system.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             system.Play(true);
+            system.Emit(_minimumVisibleBiteParticles);
+
+            if (system.TryGetComponent(out ParticleSystemRenderer renderer))
+                renderer.sortingOrder = Mathf.Max(renderer.sortingOrder, _biteEffectSortingOrder);
         }
     }
 
@@ -417,6 +442,19 @@ public sealed class FishingController : MonoBehaviour
 
         Destroy(_biteEffect.gameObject);
         _biteEffect = null;
+        _biteEffectSystems = null;
+    }
+
+    private void EnsureBiteEffectVisible()
+    {
+        if (_state != FishingState.BiteWindow || _biteEffectSystems == null)
+            return;
+
+        foreach (ParticleSystem system in _biteEffectSystems)
+        {
+            if (system != null && system.particleCount < _minimumVisibleBiteParticles)
+                system.Emit(_minimumVisibleBiteParticles - system.particleCount);
+        }
     }
 
     private Vector3 GetBiteEffectPosition()
@@ -465,5 +503,19 @@ public sealed class FishingController : MonoBehaviour
     private void OnValidate()
     {
         _maximumBiteDelay = Mathf.Max(_minimumBiteDelay, _maximumBiteDelay);
+    }
+
+    private void OnEquipmentChanged(EquipmentDefinition _)
+    {
+        ApplyEquipmentVisuals();
+    }
+
+    private void ApplyEquipmentVisuals()
+    {
+        if (_economy?.EquippedRod != null)
+            _rodView.ApplyColor(_economy.EquippedRod.Color);
+
+        if (_bobber != null && _economy?.EquippedBobber != null)
+            _bobber.ApplyColor(_economy.EquippedBobber.Color);
     }
 }
