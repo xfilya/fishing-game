@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 
 public sealed class PauseMenuController : MonoBehaviour
@@ -21,15 +22,21 @@ public sealed class PauseMenuController : MonoBehaviour
     [SerializeField] private TMP_InputField _coinsInput;
     [SerializeField] private TextMeshProUGUI _balanceText;
     [SerializeField] private TextMeshProUGUI _statusText;
+    [SerializeField] private Slider _masterVolume;
+    [SerializeField] private Slider _musicVolume;
+    [SerializeField] private Slider _ambienceVolume;
+    [SerializeField] private Slider _effectsVolume;
 
     private EconomyService _economy;
     private PauseController _pauseController;
+    private AudioService _audio;
 
     [Inject]
-    public void Construct(EconomyService economy, PauseController pauseController)
+    public void Construct(EconomyService economy, PauseController pauseController, AudioService audio)
     {
         _economy = economy;
         _pauseController = pauseController;
+        _audio = audio;
     }
 
     private void Start()
@@ -45,6 +52,14 @@ public sealed class PauseMenuController : MonoBehaviour
         _confirmResetButton.onClick.AddListener(ResetAllProgress);
         _cancelResetButton.onClick.AddListener(CloseResetConfirmation);
         _economy.BalanceChanged += RefreshBalance;
+        BindVolume(_masterVolume, _audio.MasterVolume, _audio.SetMasterVolume);
+        BindVolume(_musicVolume, _audio.MusicVolume, _audio.SetMusicVolume);
+        BindVolume(_ambienceVolume, _audio.AmbienceVolume, _audio.SetAmbienceVolume);
+        BindVolume(_effectsVolume, _audio.EffectsVolume, _audio.SetEffectsVolume);
+
+        foreach (Button button in GetComponentsInChildren<Button>(true))
+            button.onClick.AddListener(_audio.PlayClick);
+
         ShowSettings();
         RefreshBalance(_economy.Coins);
     }
@@ -149,5 +164,14 @@ public sealed class PauseMenuController : MonoBehaviour
     {
         if (_statusText != null)
             _statusText.text = message;
+    }
+
+    private void BindVolume(Slider slider, float value, UnityEngine.Events.UnityAction<float> setter)
+    {
+        if (slider == null)
+            return;
+
+        slider.SetValueWithoutNotify(value);
+        slider.onValueChanged.AddListener(setter);
     }
 }

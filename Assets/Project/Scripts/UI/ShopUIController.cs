@@ -27,6 +27,7 @@ public sealed class ShopUIController : MonoBehaviour
     private EquipmentCatalog _equipmentCatalog;
     private IInputService _input;
     private Player _player;
+    private AudioService _audio;
     private ShopType _currentShop;
     private bool _isOpen;
     private int _openedFrame;
@@ -34,13 +35,14 @@ public sealed class ShopUIController : MonoBehaviour
     public bool IsOpen => _isOpen;
 
     [Inject]
-    public void Construct(EconomyService economy, ProgressService progress, EquipmentCatalog equipmentCatalog, IInputService input, Player player)
+    public void Construct(EconomyService economy, ProgressService progress, EquipmentCatalog equipmentCatalog, IInputService input, Player player, AudioService audio)
     {
         _economy = economy;
         _progress = progress;
         _equipmentCatalog = equipmentCatalog;
         _input = input;
         _player = player;
+        _audio = audio;
     }
 
     private void Start()
@@ -97,6 +99,7 @@ public sealed class ShopUIController : MonoBehaviour
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         Refresh();
+        _audio?.PlayClick();
     }
 
     public void Close()
@@ -108,6 +111,7 @@ public sealed class ShopUIController : MonoBehaviour
         _confirmationRoot.SetActive(false);
         _shopRoot.SetActive(false);
         RestoreGameplay();
+        _audio?.PlayClick();
     }
 
     private void RestoreGameplay()
@@ -201,15 +205,22 @@ public sealed class ShopUIController : MonoBehaviour
 
     private void SellFish(CaughtFish fish)
     {
-        _economy.TrySell(fish, out _);
+        if (_economy.TrySell(fish, out _))
+            _audio?.PlayCoins();
     }
 
     private void PurchaseOrEquip(EquipmentDefinition item)
     {
         if (_economy.IsOwned(item.Id))
-            _economy.TryEquip(item);
+        {
+            if (_economy.TryEquip(item))
+                _audio?.PlayClick();
+        }
         else
-            _economy.TryPurchase(item);
+        {
+            if (_economy.TryPurchase(item))
+                _audio?.PlayCoins();
+        }
     }
 
     private void OpenSellAllConfirmation()
@@ -230,6 +241,7 @@ public sealed class ShopUIController : MonoBehaviour
     {
         _confirmationRoot.SetActive(false);
         _economy.SellAll();
+        _audio?.PlayCoins();
     }
 
     private void CloseConfirmation()

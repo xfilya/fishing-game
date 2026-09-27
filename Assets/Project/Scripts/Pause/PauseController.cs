@@ -7,17 +7,19 @@ public sealed class PauseController : MonoBehaviour
     private UIService _uiService;
     private Player _player;
     private ShopUIController _shopUI;
+    private AudioService _audio;
 
 
     private bool _isPaused = false;
 
     [Inject]
-    public void Construct(IInputService inputService, UIService uiService, Player player, ShopUIController shopUI)
+    public void Construct(IInputService inputService, UIService uiService, Player player, ShopUIController shopUI, AudioService audio)
     {
         _inputService = inputService;
         _uiService = uiService;
         _player = player;
         _shopUI = shopUI;
+        _audio = audio;
     }
 
     private void OnEnable()
@@ -52,6 +54,7 @@ public sealed class PauseController : MonoBehaviour
             }
 
             SetPauseState(!_isPaused);
+            _audio?.PlayClick();
         }
     }
 

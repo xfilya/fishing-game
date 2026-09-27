@@ -53,7 +53,11 @@ public sealed class FishingController : MonoBehaviour
     private bool _caughtFish;
 
     public event Action CastBegan;
+    public event Action<Vector3> BobberSplashed;
+    public event Action<Vector3> BiteStarted;
+    public event Action BiteEnded;
     public event Action BeginReturned;
+    public event Action ReturnCompleted;
     public event Action CatchCompleted;
     public event Action<CaughtFish> CatchResolved;
     public event Action ResultClosed;
@@ -222,6 +226,7 @@ public sealed class FishingController : MonoBehaviour
 
         StopRoutine(ref _castTimeoutRoutine);
         _state = FishingState.Waiting;
+        BobberSplashed?.Invoke(bobber.transform.position);
 
         TryAttractShadow();
     }
@@ -244,6 +249,7 @@ public sealed class FishingController : MonoBehaviour
         _state = FishingState.BiteWindow;
         _bobber.Dip();
         StartBiteEffect();
+        BiteStarted?.Invoke(GetBiteEffectPosition());
         _biteWindowRoutine = StartCoroutine(BiteWindowRoutine());
     }
 
@@ -254,6 +260,7 @@ public sealed class FishingController : MonoBehaviour
 
         StopFishingRoutines();
         StopBiteEffect();
+        BiteEnded?.Invoke();
 
         if (!caughtFish)
             ReleaseAttractedShadow();
@@ -294,6 +301,8 @@ public sealed class FishingController : MonoBehaviour
     {
         if (_state != FishingState.Reeling || !_rodReturned || !_bobberReturned)
             return;
+
+        ReturnCompleted?.Invoke();
 
         if (_caughtFish)
         {
@@ -358,6 +367,7 @@ public sealed class FishingController : MonoBehaviour
     private void CompleteMissedBite()
     {
         StopBiteEffect();
+        BiteEnded?.Invoke();
 
         if (_bobber != null)
             _bobber.ReleaseBite();

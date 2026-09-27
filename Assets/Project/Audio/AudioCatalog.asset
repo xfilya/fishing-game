@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 205cc42a08be68140a76399254a38bd8, type: 3}
+  m_Name: AudioCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::AudioCatalog
+  SandSteps:
+  - {fileID: 8300000, guid: 890e46c6ca74a7846872bda195335722, type: 3}
+  - {fileID: 8300000, guid: 3e0312132c77f5a4681dbbad822792f7, type: 3}
+  - {fileID: 8300000, guid: a2c4bca988440834f8e58966299d85c2, type: 3}
+  StoneSteps:
+  - {fileID: 8300000, guid: e93404c8f57e4a643bbf5f507ff415eb, type: 3}
+  - {fileID: 8300000, guid: c17d2b8214ebbc14aabbb8863a3478e3, type: 3}
+  - {fileID: 8300000, guid: 2b140408300cd694785ed355e560ddd4, type: 3}
+  Jump: {fileID: 8300000, guid: f636f0e3e0627104a9074b9747a51f35, type: 3}
+  SandLanding: {fileID: 8300000, guid: 07862fb9b4462a941971ea6bf2f341c0, type: 3}
+  StoneLanding: {fileID: 8300000, guid: 03ec5e7328e5cad42886dec3e2679657, type: 3}
+  CastWindup: {fileID: 8300000, guid: 62e57970eca21d6469dce9a96801cd8c, type: 3}
+  CastRelease: {fileID: 8300000, guid: ce432acdb7a1d8c41addd6eec20cb685, type: 3}
+  BobberSplash: {fileID: 8300000, guid: 7b12c7fa44b5dcc47884711c873db24f, type: 3}
+  FishBite: {fileID: 8300000, guid: 3a08378d8524be6428d2c635a41453fe, type: 3}
+  BiteBubbles: {fileID: 8300000, guid: 35e0b864f09944c4b97ed228c9c76ad4, type: 3}
+  Reel: {fileID: 8300000, guid: 8086e0559296e7a47960417bae0599b4, type: 3}
+  Catch: {fileID: 8300000, guid: e05cef4ee200149498d0875fda0f7c3f, type: 3}
+  Click: {fileID: 8300000, guid: b1c42d2afd93b8f4d8a803d455d4acd3, type: 3}
+  Coins: {fileID: 8300000, guid: 8430cd795724ab34786e0479ec0ffc26, type: 3}
+  Ocean: {fileID: 8300000, guid: 1e71e0bf50901c04fac8e9c03c36b886, type: 3}
+  Birds: {fileID: 8300000, guid: c3c8b6ed3c78d464e898cf2fe96ae546, type: 3}
+  Music: {fileID: 8300000, guid: 0913dde26bde7244baf2d94cae099ae5, type: 3}
