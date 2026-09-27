@@ -4,8 +4,11 @@ The following sound recordings are included in the game. The clips may be trimme
 
 | Files | Source | License |
 | --- | --- | --- |
-| `SandStep*.ogg`, `StoneStep*.ogg`, `SandLanding.ogg`, `StoneLanding.ogg` | [Fantozzi's Footsteps (Grass/Sand & Stone)](https://opengameart.org/content/fantozzis-footsteps-grasssand-stone) | CC0 |
+| `SandStep*.ogg`, `SandLanding.ogg` | [Water Splash and Sand Footsteps](https://opengameart.org/content/water-splash-and-sand-footsteps) | CC0 |
+| `StoneStep*.ogg`, `StoneLanding.ogg` | [Fantozzi's Footsteps (Grass/Sand & Stone)](https://opengameart.org/content/fantozzis-footsteps-grasssand-stone) | CC0 |
+| `WoodStep*.ogg`, `WoodLanding.ogg` | [Different Steps on Wood, Stone, Leaves, Gravel and Mud](https://opengameart.org/content/different-steps-on-wood-stone-leaves-gravel-and-mud) | CC0 |
 | `BobberSplash.ogg`, `FishBite.ogg`, `BiteBubbles.ogg` | [40 CC0 water/splash/slime SFX](https://opengameart.org/content/40-cc0-water-splash-slime-sfx) | CC0 |
+| `AquariumBubbles.ogg` | [40 CC0 water/splash/slime SFX](https://opengameart.org/content/40-cc0-water-splash-slime-sfx) | CC0 |
 | `Birds.ogg` | [Ambient Bird Sounds](https://opengameart.org/content/ambient-bird-sounds) | CC0 |
 | `IslandMusic.ogg` | [Feel Good Island](https://opengameart.org/content/feel-good-island) | CC0 option |
 | `Ocean.ogg` | [Ocean Waves on a Tropical Beach](https://commons.wikimedia.org/wiki/File:Ocean_Waves_on_a_Tropical_Beach.ogg), Jarrod Stanley / J.D. Savanyu | CC0 |

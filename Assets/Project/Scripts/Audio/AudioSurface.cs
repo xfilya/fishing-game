@@ -1,8 +1,15 @@
 using UnityEngine;
 
+public enum AudioSurfaceType
+{
+    Sand,
+    Stone,
+    Wood
+}
+
 public sealed class AudioSurface : MonoBehaviour
 {
-    [SerializeField] private bool _isStone;
+    [SerializeField] private AudioSurfaceType _surfaceType;
 
-    public bool IsStone => _isStone;
+    public AudioSurfaceType SurfaceType => _surfaceType;
 }

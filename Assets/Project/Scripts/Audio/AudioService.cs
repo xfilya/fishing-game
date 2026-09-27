@@ -3,14 +3,20 @@ using UnityEngine;
 public sealed class AudioService : MonoBehaviour
 {
     [SerializeField] private AudioCatalog _catalog;
+    [SerializeField] private Transform _musicOrigin;
+    [SerializeField] private Transform _aquariumOrigin;
     [SerializeField, Range(0f, 1f)] private float _defaultMasterVolume = 0.8f;
-    [SerializeField, Range(0f, 1f)] private float _defaultMusicVolume = 0.25f;
+    [SerializeField, Range(0f, 1f)] private float _defaultMusicVolume = 0.55f;
     [SerializeField, Range(0f, 1f)] private float _defaultAmbienceVolume = 0.38f;
     [SerializeField, Range(0f, 1f)] private float _defaultEffectsVolume = 0.8f;
+    [SerializeField, Range(0f, 2f)] private float _musicGain = 1.75f;
+    [SerializeField, Range(0f, 1f)] private float _castWindupVolume = 0.35f;
+    [SerializeField, Range(0f, 1f)] private float _castReleaseVolume = 0.35f;
 
     private AudioSource _music;
     private AudioSource _ocean;
     private AudioSource _birds;
+    private AudioSource _aquarium;
     private AudioSource _effects;
     private AudioSource _reel;
     private AudioSource _interface;
@@ -30,9 +36,22 @@ public sealed class AudioService : MonoBehaviour
         AmbienceVolume = PlayerPrefs.GetFloat("Audio.Ambience", _defaultAmbienceVolume);
         EffectsVolume = PlayerPrefs.GetFloat("Audio.Effects", _defaultEffectsVolume);
 
-        _music = CreateSource("Music", false);
+        _music = CreateSource("Music", _musicOrigin != null);
+        _music.minDistance = 18f;
+        _music.maxDistance = 75f;
+
+        if (_musicOrigin != null)
+            _music.transform.position = _musicOrigin.position;
+
         _ocean = CreateSource("Ocean", false);
         _birds = CreateSource("Birds", false);
+        _aquarium = CreateSource("Aquarium", true);
+        _aquarium.minDistance = 3f;
+        _aquarium.maxDistance = 22f;
+
+        if (_aquariumOrigin != null)
+            _aquarium.transform.position = _aquariumOrigin.position;
+
         _effects = CreateSource("Effects", false);
         _reel = CreateSource("Reel", false);
         _interface = CreateSource("Interface", false);
@@ -47,12 +66,12 @@ public sealed class AudioService : MonoBehaviour
 
     private void Start()
     {
-        if (_catalog == null)
-            return;
+        StartLoop(_music, _catalog?.Music);
+        StartLoop(_ocean, _catalog?.Ocean);
+        StartLoop(_birds, _catalog?.Birds);
 
-        StartLoop(_music, _catalog.Music);
-        StartLoop(_ocean, _catalog.Ocean);
-        StartLoop(_birds, _catalog.Birds);
+        if (_aquariumOrigin != null)
+            StartLoop(_aquarium, _catalog?.AquariumBubbles);
     }
 
     public void SetMasterVolume(float value)
@@ -83,9 +102,14 @@ public sealed class AudioService : MonoBehaviour
         ApplyVolumes();
     }
 
-    public void PlayStep(bool stone)
+    public void PlayStep(AudioSurfaceType surface)
     {
-        AudioClip[] clips = stone ? _catalog?.StoneSteps : _catalog?.SandSteps;
+        AudioClip[] clips = surface switch
+        {
+            AudioSurfaceType.Stone => _catalog?.StoneSteps,
+            AudioSurfaceType.Wood => _catalog?.WoodSteps,
+            _ => _catalog?.SandSteps
+        };
 
         if (clips == null || clips.Length == 0)
             return;
@@ -95,9 +119,14 @@ public sealed class AudioService : MonoBehaviour
     }
 
     public void PlayJump() => PlayEffect(_catalog?.Jump, 0.5f);
-    public void PlayLanding(bool stone) => PlayEffect(stone ? _catalog?.StoneLanding : _catalog?.SandLanding, 0.9f);
-    public void PlayCastWindup() => PlayEffect(_catalog?.CastWindup, 0.75f);
-    public void PlayCastRelease() => PlayEffect(_catalog?.CastRelease, 0.9f);
+    public void PlayLanding(AudioSurfaceType surface) => PlayEffect(surface switch
+    {
+        AudioSurfaceType.Stone => _catalog?.StoneLanding,
+        AudioSurfaceType.Wood => _catalog?.WoodLanding,
+        _ => _catalog?.SandLanding
+    }, 0.9f);
+    public void PlayCastWindup() => PlayEffect(_catalog?.CastWindup, _castWindupVolume);
+    public void PlayCastRelease() => PlayEffect(_catalog?.CastRelease, _castReleaseVolume);
     public void PlayCatch() => PlayEffect(_catalog?.Catch, 0.85f);
     public void PlayClick() => PlayInterface(_catalog?.Click, 0.5f);
     public void PlayCoins() => PlayInterface(_catalog?.Coins, 0.85f);
@@ -112,7 +141,11 @@ public sealed class AudioService : MonoBehaviour
         StartLoop(_bubbles, _catalog.BiteBubbles);
     }
 
-    public void StopBiteBubbles() => _bubbles.Stop();
+    public void StopBiteBubbles()
+    {
+        if (_bubbles != null)
+            _bubbles.Stop();
+    }
 
     public void StartReel()
     {
@@ -123,7 +156,11 @@ public sealed class AudioService : MonoBehaviour
         }
     }
 
-    public void StopReel() => _reel.Stop();
+    public void StopReel()
+    {
+        if (_reel != null)
+            _reel.Stop();
+    }
 
     private void PlayEffect(AudioClip clip, float volume)
     {
@@ -178,9 +215,10 @@ public sealed class AudioService : MonoBehaviour
     private void ApplyVolumes()
     {
         float master = MasterVolume;
-        _music.volume = master * MusicVolume * 0.65f;
+        _music.volume = Mathf.Clamp01(master * MusicVolume * _musicGain);
         _ocean.volume = master * AmbienceVolume * 0.5f;
         _birds.volume = master * AmbienceVolume * 0.45f;
+        _aquarium.volume = master * AmbienceVolume * 0.5f;
         _effects.volume = master * EffectsVolume;
         _reel.volume = master * EffectsVolume * 0.7f;
         _interface.volume = master * EffectsVolume;
