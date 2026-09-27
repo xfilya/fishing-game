@@ -18,12 +18,12 @@ MonoBehaviour:
   debugSectionsChannels: 7
   debugPerceptualSections: 0
   discontinuityInput: 3
-  depthSensitivity: 0.29
+  depthSensitivity: 0.176
   depthDistanceModulation: 0.672
   grazingAngleMaskPower: 0.648
   grazingAngleMaskHardness: 4.6
   normalSensitivity: 0
-  luminanceSensitivity: 0.115
+  luminanceSensitivity: 0.182
   objectId: 1
   particles: 0
   sectionMapInput: 0
