@@ -30020,6 +30020,61 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8430646028472544862, guid: 4ab044ede82546f0b0578ad72081d51f, type: 3}
   m_PrefabInstance: {fileID: 1566625070}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1305268991
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1305268993}
+  - component: {fileID: 1305268992}
+  m_Layer: 0
+  m_Name: Seagull Flock
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1305268992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305268991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1711a47e367cd144d81e3ef5f0f574ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SeagullFlock
+  _seagullPrefab: {fileID: 7888240909592647943, guid: 6ed9dcf6e2a37a24b94a71835b214795, type: 3}
+  _viewCamera: {fileID: 7686289256095487126}
+  _audioService: {fileID: 394166729}
+  _count: 8
+  _radius: 40
+  _minimumHeight: 13
+  _maximumHeight: 21
+  _minimumSpeed: 2.8
+  _maximumSpeed: 6.2
+  _minimumCallInterval: 8
+  _maximumCallInterval: 17
+--- !u!4 &1305268993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305268991}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 19.5, z: 9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1305293161
 GameObject:
   m_ObjectHideFlags: 0
@@ -54564,6 +54619,11 @@ MonoBehaviour:
   _groundMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!20 &7686289256095487126 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8896282843362960122, guid: 31299f48e1fed87449462ee7ccda53e8, type: 3}
+  m_PrefabInstance: {fileID: 7686289256095487122}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &7712200842750924591
 GameObject:
   m_ObjectHideFlags: 0
@@ -55936,3 +55996,4 @@ SceneRoots:
   - {fileID: 554823412}
   - {fileID: 1028606603}
   - {fileID: 2049495817}
+  - {fileID: 1305268993}

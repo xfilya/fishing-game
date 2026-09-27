@@ -1,0 +1,4 @@
+Seagull calls 2, 3, and 4
+Source: https://opengameart.org/content/solo-seagull-sound-effects
+License: CC0 1.0
+Converted from WAV to OGG Vorbis and lightly filtered for in-game ambience.

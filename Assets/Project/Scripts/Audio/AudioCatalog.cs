@@ -28,6 +28,7 @@ public sealed class AudioCatalog : ScriptableObject
     [Header("Atmosphere")]
     public AudioClip Ocean;
     public AudioClip Birds;
+    public AudioClip[] SeagullCalls;
     public AudioClip Music;
     public AudioClip AquariumBubbles;
 }

@@ -39,5 +39,9 @@ MonoBehaviour:
   Coins: {fileID: 8300000, guid: 8430cd795724ab34786e0479ec0ffc26, type: 3}
   Ocean: {fileID: 8300000, guid: 1e71e0bf50901c04fac8e9c03c36b886, type: 3}
   Birds: {fileID: 8300000, guid: c3c8b6ed3c78d464e898cf2fe96ae546, type: 3}
+  SeagullCalls:
+  - {fileID: 8300000, guid: ce22513a2b7d59f429afd6fd7d187bde, type: 3}
+  - {fileID: 8300000, guid: 31c10e70c91a40a4dac02eb702ba07fa, type: 3}
+  - {fileID: 8300000, guid: 3057ab7f9c2ece84aa442a16d9b418fb, type: 3}
   Music: {fileID: 8300000, guid: 0913dde26bde7244baf2d94cae099ae5, type: 3}
   AquariumBubbles: {fileID: 8300000, guid: c0c8b034be9c88444a38acea10090860, type: 3}

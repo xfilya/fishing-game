@@ -16,6 +16,7 @@ public sealed class AudioService : MonoBehaviour
     private AudioSource _music;
     private AudioSource _ocean;
     private AudioSource _birds;
+    private AudioSource _seagullCall;
     private AudioSource _aquarium;
     private AudioSource _effects;
     private AudioSource _reel;
@@ -45,6 +46,9 @@ public sealed class AudioService : MonoBehaviour
 
         _ocean = CreateSource("Ocean", false);
         _birds = CreateSource("Birds", false);
+        _seagullCall = CreateSource("Seagull Call", true);
+        _seagullCall.minDistance = 10f;
+        _seagullCall.maxDistance = 70f;
         _aquarium = CreateSource("Aquarium", true);
         _aquarium.minDistance = 3f;
         _aquarium.maxDistance = 22f;
@@ -133,6 +137,17 @@ public sealed class AudioService : MonoBehaviour
     public void PlayBobberSplash(Vector3 position) => PlayWorld(_catalog?.BobberSplash, position, 0.95f);
     public void PlayFishBite(Vector3 position) => PlayWorld(_catalog?.FishBite, position, 1f);
 
+    public void PlaySeagullCall(Vector3 position)
+    {
+        AudioClip[] calls = _catalog?.SeagullCalls;
+        if (calls == null || calls.Length == 0)
+            return;
+
+        _seagullCall.transform.position = position;
+        _seagullCall.pitch = Random.Range(0.9f, 1.1f);
+        _seagullCall.PlayOneShot(calls[Random.Range(0, calls.Length)]);
+    }
+
     public void StartBiteBubbles()
     {
         if (_catalog?.BiteBubbles == null)
@@ -218,6 +233,7 @@ public sealed class AudioService : MonoBehaviour
         _music.volume = Mathf.Clamp01(master * MusicVolume * _musicGain);
         _ocean.volume = master * AmbienceVolume * 0.5f;
         _birds.volume = master * AmbienceVolume * 0.45f;
+        _seagullCall.volume = master * AmbienceVolume * 0.65f;
         _aquarium.volume = master * AmbienceVolume * 0.5f;
         _effects.volume = master * EffectsVolume;
         _reel.volume = master * EffectsVolume * 0.7f;
