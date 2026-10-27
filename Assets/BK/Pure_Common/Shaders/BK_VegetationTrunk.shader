@@ -83,7 +83,12 @@ Shader "BK/Vegetation Trunk"
 		
 
 		HLSLINCLUDE
-		#pragma target 4.5
+		#if defined( SHADER_API_MOBILE )
+			#pragma target 3.5
+			#pragma skip_variants DOTS_INSTANCING_ON
+		#else
+			#pragma target 4.5
+		#endif
 		#pragma prefer_hlslcc gles
 		// ensure rendering platforms toggle list is visible
 
