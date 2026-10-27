@@ -203,7 +203,7 @@ public sealed class MainMenuController : MonoBehaviour
     private void RefreshControlsHint()
     {
         _wasTouch = _input.IsTouch;
-        _controlsText.text = _wasTouch ? "Джойстик — движение | справа — обзор\nКнопки — удочка, торговля и пауза" : "WASD — движение | мышь — обзор\nЛКМ — удочка | E — торговля | Esc — пауза";
+        _controlsText.text = _wasTouch ? "Джойстик - движение | справа - обзор\nКнопки - удочка, торговля и пауза" : "WASD - движение | мышь - обзор\nЛКМ - удочка | E - торговля | Esc - пауза";
     }
 
     private void ShowSettings()
