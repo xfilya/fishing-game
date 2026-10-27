@@ -155,7 +155,7 @@ public sealed class ShopUIController : MonoBehaviour
             int price = _economy.GetFishPrice(currentFish);
             total += price;
             ShopItemView view = ShopItemView.Create(_content, _font);
-            string details = $"{GetRarityName(currentFish.Definition.Rarity)}  •  {currentFish.Weight:0.00} кг";
+            string details = $"{GetRarityName(currentFish.Definition.Rarity)}  |  {currentFish.Weight:0.00} кг";
             view.Configure(_fishIcon, FishRarityColors.Get(currentFish.Definition.Rarity), currentFish.Definition.DisplayName, details, $"+ {price:N0}", true, () => SellFish(currentFish));
         }
 
@@ -183,7 +183,7 @@ public sealed class ShopUIController : MonoBehaviour
             bool canPurchase = _economy.CanPurchase(currentItem);
             bool interactable = owned ? !equipped : canPurchase;
             string action = GetEquipmentAction(currentItem, owned, equipped, previousOwned);
-            string details = isRod ? $"Удача +{currentItem.RarityLuck:0}  •  Крупный вес ×{currentItem.WeightBias:0.##}" : $"Удача редкости +{currentItem.RarityLuck:0}";
+            string details = isRod ? $"Удача +{currentItem.RarityLuck:0}  |  Крупный вес ×{currentItem.WeightBias:0.##}" : $"Удача редкости +{currentItem.RarityLuck:0}";
             ShopItemView view = ShopItemView.Create(_content, _font);
             view.Configure(isRod ? _rodIcon : _bobberIcon, currentItem.Color, currentItem.DisplayName, details, action, interactable, () => PurchaseOrEquip(currentItem));
         }

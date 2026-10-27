@@ -77,6 +77,15 @@ public sealed class Player : MonoBehaviour
         _playerCamera.enabled = isEnabled;
     }
 
+    public void SetGameplayEnabled(bool isEnabled)
+    {
+        _movement.enabled = isEnabled;
+        _movement.SetMovementEnabled(isEnabled);
+        _playerCamera.enabled = isEnabled;
+        _jump.enabled = isEnabled;
+        _sprint.enabled = isEnabled;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<WaterFlag>(out _))

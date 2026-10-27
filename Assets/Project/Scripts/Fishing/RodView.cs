@@ -85,6 +85,13 @@ public sealed class RodView : MonoBehaviour
         RestartRoutine(ReturnRoutine());
     }
 
+    public void ResetPose()
+    {
+        StopCurrentAnimation();
+        _rotationRoot.localRotation = _defaultLocalRotation;
+        SetBendPose(0f);
+    }
+
     private IEnumerator CastRoutine()
     {
         SetBendPose(0f);

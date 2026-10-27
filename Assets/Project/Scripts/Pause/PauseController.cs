@@ -42,7 +42,7 @@ public sealed class PauseController : MonoBehaviour
 
     private void Update()
     {
-        if (_inputService == null)
+        if (_inputService == null || _uiService.IsMainMenuOpen)
             return;
 
         if (_inputService.EscapePressedThisFrame)
@@ -61,9 +61,10 @@ public sealed class PauseController : MonoBehaviour
     private void SetPauseState(bool isPaused)
     {
         _isPaused = isPaused;
-        _inputService.SetGameplayEnabled(!isPaused);
+        bool gameplayEnabled = !isPaused && !_uiService.IsMainMenuOpen;
+        _inputService.SetGameplayEnabled(gameplayEnabled);
         _uiService.OpenMenu(isPaused);
-        _player.EnableCamera(!isPaused);
+        _player.EnableCamera(gameplayEnabled);
         Time.timeScale = isPaused ? 0f : 1f;
     }
 

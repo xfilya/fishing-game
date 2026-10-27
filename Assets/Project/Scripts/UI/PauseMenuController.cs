@@ -30,13 +30,15 @@ public sealed class PauseMenuController : MonoBehaviour
     private EconomyService _economy;
     private PauseController _pauseController;
     private AudioService _audio;
+    private MainMenuController _mainMenu;
 
     [Inject]
-    public void Construct(EconomyService economy, PauseController pauseController, AudioService audio)
+    public void Construct(EconomyService economy, PauseController pauseController, AudioService audio, MainMenuController mainMenu)
     {
         _economy = economy;
         _pauseController = pauseController;
         _audio = audio;
+        _mainMenu = mainMenu;
     }
 
     private void Start()
@@ -68,6 +70,14 @@ public sealed class PauseMenuController : MonoBehaviour
     {
         if (_settingsPanel != null)
             ShowSettings();
+
+        if (_audio != null)
+        {
+            _masterVolume?.SetValueWithoutNotify(_audio.MasterVolume);
+            _musicVolume?.SetValueWithoutNotify(_audio.MusicVolume);
+            _ambienceVolume?.SetValueWithoutNotify(_audio.AmbienceVolume);
+            _effectsVolume?.SetValueWithoutNotify(_audio.EffectsVolume);
+        }
     }
 
     private void OnDestroy()
@@ -89,7 +99,7 @@ public sealed class PauseMenuController : MonoBehaviour
 
     private void ShowExit()
     {
-        SetPanel(_exitPanel);
+        _mainMenu.Open();
     }
 
     private void SetPanel(GameObject activePanel)

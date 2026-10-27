@@ -110,6 +110,20 @@ public sealed class FishingController : MonoBehaviour
             _rodView.Returned -= OnRodReturned;
         }
 
+        ClearFishing();
+    }
+
+    public void CancelFishing()
+    {
+        ClearFishing();
+        _rodView.ResetPose();
+        BiteEnded?.Invoke();
+        ReturnCompleted?.Invoke();
+        ResultClosed?.Invoke();
+    }
+
+    private void ClearFishing()
+    {
         StopFishingRoutines();
         StopBiteEffect();
         ReleaseAttractedShadow();

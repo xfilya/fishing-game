@@ -31,6 +31,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<ShopUIController>();
         builder.RegisterComponentInHierarchy<ShopInteractionController>();
         builder.RegisterComponentInHierarchy<PauseMenuController>();
+        builder.RegisterComponentInHierarchy<MainMenuController>();
         builder.RegisterComponentInHierarchy<AudioService>();
         builder.RegisterComponentInHierarchy<PlayerAudio>();
         builder.RegisterComponentInHierarchy<FishingAudio>();
