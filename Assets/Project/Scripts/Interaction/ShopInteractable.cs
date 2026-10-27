@@ -4,7 +4,7 @@ public sealed class ShopInteractable : MonoBehaviour
 {
     [SerializeField] private ShopType _shopType;
     [SerializeField] private string _displayName = "Торговец";
-    [SerializeField, Min(0.5f)] private float _interactionRadius = 3f;
+    [SerializeField, Min(0.5f)] private float _interactionRadius = 5.5f;
     [SerializeField] private Transform _interactionPoint;
 
     public ShopType ShopType => _shopType;
