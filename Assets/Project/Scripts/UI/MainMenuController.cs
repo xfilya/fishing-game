@@ -26,6 +26,7 @@ public sealed class MainMenuController : MonoBehaviour
     [SerializeField] private UnityEngine.UI.Slider _ambienceVolume;
     [SerializeField] private UnityEngine.UI.Slider _effectsVolume;
     [SerializeField] private TextMeshProUGUI _progressText;
+    [SerializeField] private TextMeshProUGUI _controlsText;
     [SerializeField, Min(0.1f)] private float _flightDuration = 2.6f;
     [SerializeField, Min(0f)] private float _flightHeight = 3f;
     [SerializeField, Range(20f, 90f)] private float _menuFieldOfView = 55f;
@@ -48,6 +49,7 @@ public sealed class MainMenuController : MonoBehaviour
     private bool _playerVisualsActive;
     private bool _rodActive;
     private Tween _cameraTween;
+    private bool _wasTouch;
 
     public bool IsTransitioning { get; private set; }
 
@@ -94,6 +96,9 @@ public sealed class MainMenuController : MonoBehaviour
 
     private void Update()
     {
+        if (_wasTouch != _input.IsTouch)
+            RefreshControlsHint();
+
         if (!_uiService.IsMainMenuOpen || IsTransitioning || !_input.EscapePressedThisFrame)
             return;
 
@@ -192,6 +197,13 @@ public sealed class MainMenuController : MonoBehaviour
         _settingsPanel.SetActive(false);
         _resetConfirmation.SetActive(false);
         _progressText.text = $"Коллекция: {_progress.Collection.Count} / {_catalog.Fish.Count}  |  Дубликаты: {_progress.Inventory.Count}";
+        RefreshControlsHint();
+    }
+
+    private void RefreshControlsHint()
+    {
+        _wasTouch = _input.IsTouch;
+        _controlsText.text = _wasTouch ? "Джойстик — движение | справа — обзор\nКнопки — удочка, торговля и пауза" : "WASD — движение | мышь — обзор\nЛКМ — удочка | E — торговля | Esc — пауза";
     }
 
     private void ShowSettings()

@@ -14,6 +14,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterInstance(_fishCatalog);
         builder.RegisterInstance(_equipmentCatalog);
 
+        builder.Register<MobileInputService>(Lifetime.Singleton);
         builder.Register<IInputService, InputService>(Lifetime.Singleton);
         builder.Register<SaveService>(Lifetime.Singleton);
         builder.Register<ProgressService>(Lifetime.Singleton);
@@ -32,6 +33,7 @@ public class GameLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<ShopInteractionController>();
         builder.RegisterComponentInHierarchy<PauseMenuController>();
         builder.RegisterComponentInHierarchy<MainMenuController>();
+        builder.RegisterComponentInHierarchy<MobileControlsController>();
         builder.RegisterComponentInHierarchy<AudioService>();
         builder.RegisterComponentInHierarchy<PlayerAudio>();
         builder.RegisterComponentInHierarchy<FishingAudio>();

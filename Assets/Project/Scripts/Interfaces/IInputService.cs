@@ -6,6 +6,8 @@ public interface IInputService
     Vector2 Look { get; }
 
     bool IsMouse { get; }
+    bool IsTouch { get; }
+    bool IsGameplayEnabled { get; }
 
     bool JumpPressedThisFrame { get; }
     bool SprintHeld { get; }

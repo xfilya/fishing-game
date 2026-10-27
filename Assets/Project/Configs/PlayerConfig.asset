@@ -16,6 +16,7 @@ MonoBehaviour:
   <Gravity>k__BackingField: -20
   <MouseSensitivity>k__BackingField: 0.05
   <StickSensitivity>k__BackingField: 180
+  <TouchSensitivity>k__BackingField: 180
   <CameraClampAngle>k__BackingField: 89
   <JumpHeight>k__BackingField: 1.5
   <SprintMultiplier>k__BackingField: 1.5

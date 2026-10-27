@@ -26,7 +26,7 @@ public sealed class PlayerCamera : MonoBehaviour
 
     private void Start()
     {
-        if (!Application.isMobilePlatform)
+        if (!_input.IsTouch)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -53,7 +53,12 @@ public sealed class PlayerCamera : MonoBehaviour
         float yaw;
         float pitchDelta;
 
-        if (_input.IsMouse)
+        if (_input.IsTouch)
+        {
+            yaw = look.x * _config.TouchSensitivity;
+            pitchDelta = look.y * _config.TouchSensitivity;
+        }
+        else if (_input.IsMouse)
         {
             yaw = look.x * _config.MouseSensitivity;
 

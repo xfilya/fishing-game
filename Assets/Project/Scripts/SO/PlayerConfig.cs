@@ -10,6 +10,7 @@ public sealed class PlayerConfig : ScriptableObject
     [field: Header("Camera")]
     [field: SerializeField] public float MouseSensitivity { get; private set; } = 0.1f;
     [field: SerializeField] public float StickSensitivity { get; private set; } = 180f;
+    [field: SerializeField] public float TouchSensitivity { get; private set; } = 180f;
     [field: SerializeField] public float CameraClampAngle { get; private set; } = 85f;   
 
     [field: Header("Jump")]

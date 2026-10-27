@@ -119,8 +119,8 @@ public sealed class ShopUIController : MonoBehaviour
         _input?.SetGameplayEnabled(true);
         if (_player != null)
             _player.EnableCamera(true);
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = _input.IsTouch;
+        Cursor.lockState = _input.IsTouch ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
     private void Refresh()

@@ -15,6 +15,8 @@ public sealed class ShopInteractionController : MonoBehaviour
     private ShopInteractable[] _shops;
     private ShopInteractable _nearestShop;
 
+    public bool CanInteract => _nearestShop != null && !_uiService.IsMenuOpen && !_shopUI.IsOpen && _fishingController.State == FishingState.Ready;
+
     [Inject]
     public void Construct(IInputService input, Player player, FishingController fishingController, ShopUIController shopUI, UIService uiService)
     {
@@ -75,10 +77,11 @@ public sealed class ShopInteractionController : MonoBehaviour
 
     private void SetPrompt(bool isVisible)
     {
-        if (_promptRoot != null && _promptRoot.activeSelf != isVisible)
-            _promptRoot.SetActive(isVisible);
+        bool showPrompt = isVisible && !_input.IsTouch;
+        if (_promptRoot != null && _promptRoot.activeSelf != showPrompt)
+            _promptRoot.SetActive(showPrompt);
 
-        if (isVisible && _promptText != null)
+        if (showPrompt && _promptText != null)
             _promptText.text = $"<b>E</b>  {_nearestShop.DisplayName}";
     }
 }

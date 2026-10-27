@@ -1,13 +1,18 @@
 using UnityEngine;
+using VContainer;
 
 public class UIService : MonoBehaviour
 {
     [SerializeField] private GameObject _menu;
 
     private bool _isPauseMenuOpen;
+    private IInputService _input;
 
     public bool IsMainMenuOpen { get; private set; }
     public bool IsMenuOpen => _isPauseMenuOpen || IsMainMenuOpen;
+
+    [Inject]
+    public void Construct(IInputService input) => _input = input;
 
     public void OpenMenu(bool isOpen)
     {
@@ -24,9 +29,10 @@ public class UIService : MonoBehaviour
         RefreshCursor();
     }
 
-    private void RefreshCursor()
+    public void RefreshCursor()
     {
-        Cursor.visible = IsMenuOpen;
-        Cursor.lockState = IsMenuOpen ? CursorLockMode.None : CursorLockMode.Locked;
+        bool freeCursor = IsMenuOpen || _input.IsTouch;
+        Cursor.visible = freeCursor;
+        Cursor.lockState = freeCursor ? CursorLockMode.None : CursorLockMode.Locked;
     }
 }
